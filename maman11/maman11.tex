@@ -49,25 +49,34 @@
     \\
     \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
     \quad $length \leftarrow \textsc{Length}(S)$ \\
-    \quad Create a cost vector $A[length]$ \\
-    \quad \textit{$A[k]$ - minimum cost of segmenting the prefix of length $k$} \\
+    \quad Create a cost vector $A[length + 1]$ \\
+    \quad \textit{$A[j]$ - minimum cost of segmenting the prefix of length $j$} \\
     \\
-    \quad \# \textit{Initialization: distance to zeroth letter is zero, distance to other letters is infinity} \\
+    \quad \# \textit{Initialization} \\
     \quad $A[0] = 0$ \\
-    \quad $A[1 .. length - 1] = \infty$ \\
+    \quad $A[1 .. length] = \infty$ \\
     \\
-    \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to (not including)} $length$ \textbf{do} \\
-    \quad\quad \textbf{if} $A[i] \neq \infty$ \\
-    \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
-    \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length - 1$ \textbf{do} \\
-    \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots length - 1] \in V$ \\
-    \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
+    1. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
+    2. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
+    3. \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
+    4. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
+    5. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots length] \in V$ \\
+    6. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
     \\
     \\
     \quad \# \textit{Termination} \\
     \quad \textbf{return} $A[length - 1]$
     \end{tabbing}
-
+    \subsection*{c}
+    We keep an additional array \texttt{B} of \texttt{length + 1} elements.
+    Starting from j = length, B[j] will contain the start index of the word that ends in index j.
+    We can construct B by replacing step 6. with:
+    \begin{tabbing}
+        \quad \texttt{if (A[i] - log((S[i + 1 ... j])) < A[j]):} \\
+        \quad\quad \texttt{A[j] = A[i] - log((S[i + 1 ... j]))} \\
+        \quad\quad \texttt{B[j] = i}
+    \end{tabbing}
+    Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
 
     \section*{Question 5}
     TODO
