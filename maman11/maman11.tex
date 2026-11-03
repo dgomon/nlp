@@ -72,9 +72,9 @@
     Starting from j = length, B[j] will contain the start index of the word that ends in index j.
     We can construct B by replacing step 6. with:
     \begin{tabbing}
-        \quad \texttt{if (A[i] - log((S[i + 1 ... j])) < A[j]):} \\
-        \quad\quad \texttt{A[j] = A[i] - log((S[i + 1 ... j]))} \\
-        \quad\quad \texttt{B[j] = i}
+        \quad \texttt{if (A[i] - log(P((S[i + 1 ... j]))) < A[j]):} \\
+        \quad\quad \texttt{A[j] = A[i] - log(P((S[i + 1 ... j])))} \\
+        \quad\quad \texttt{B[j] = i + 1}
     \end{tabbing}
     Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
 
