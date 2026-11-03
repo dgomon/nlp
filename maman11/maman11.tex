@@ -69,14 +69,23 @@
     \end{tabbing}
     \subsection*{c}
     We keep an additional array \texttt{B} of \texttt{length + 1} elements.
-    Starting from j = length, B[j] will contain the start index of the word that ends in index j.
-    We can construct B by replacing step 6. with:
+    We can construct B by replacing step 6. with steps:
     \begin{tabbing}
         \quad \texttt{if (A[i] - log(P((S[i + 1 ... j]))) < A[j]):} \\
         \quad\quad \texttt{A[j] = A[i] - log(P((S[i + 1 ... j])))} \\
         \quad\quad \texttt{B[j] = i + 1}
     \end{tabbing}
+    Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
     Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
+    Algorithm to get the optimal division:
+    \begin{tabbing}
+        \quad Initialize an empty list of words $W = []$ and an index pointer $k = length$. \\
+        \quad While $k > 0$: \\
+        \quad\quad Let $start = B[k]$. \\
+        \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
+        \quad\quad Update $k = start - 1$. \\
+        \quad Return $W$ (reversed if appended).
+    \end{tabbing}
 
     \section*{Question 5}
     TODO
