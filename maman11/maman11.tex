@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{amstext}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\numberwithin{equation}{section}
+
+\title{Natural Language Processing \\ \large Maman 11}
+\author{Dmitri Gomon}
+\date{November 2026}
+
+\begin{document}
+
+    \maketitle
+
+    \section*{Question 1}
+    TODO
+
+    \section*{Question 2}
+    TODO
+
+
+    \section*{Question 3}
+    TODO
+
+    \section*{Question 4}
+    \subsection*{a}
+    We use the following equivalence chain:
+    \begin{align*}
+        \argmax_{w_1, \dots, w_k} \prod_{i=1}^k P(w_i)
+        &\iff \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
+            && \text{($a > b \iff \log a > \log b$)} \\
+        &\iff \argmax_{w_1, \dots, w_k} \sum_{i=1}^k \log P(w_i)
+            && (\log(ab) = \log(a) + \log(b)) \\
+        &\iff \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
+        &\iff \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
+            && (\log(-a) = \log(\frac{1}{a})) \\
+    \end{align*}
+
+    \section*{Question 5}
+    TODO
+
+
+
+
+    \section*{Disclosure TODO}
+    I used ChatGPT to assist with clarifying concepts and with preliminary phrasing.
+    All final reasoning and solutions are my own.
+
+
+\end{document}
