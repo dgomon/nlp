@@ -60,12 +60,12 @@
     2. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
     3. \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
     4. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
-    5. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots length] \in V$ \\
+    5. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
     6. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
     \\
     \\
     \quad \# \textit{Termination} \\
-    \quad \textbf{return} $A[length - 1]$
+    \quad \textbf{return} $A[length]$
     \end{tabbing}
     \subsection*{c}
     We keep an additional array \texttt{B} of \texttt{length + 1} elements.
