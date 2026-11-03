@@ -46,13 +46,6 @@
 
     \subsection*{b}
     \begin{tabbing}
-    \textbf{function} \textsc{Get-Cost}($S, V, i, j$) \textbf{returns} \textit{cost} \\
-    \quad $w \leftarrow S[i, j]$ \\
-    \quad \textbf{if} $V$ contains \textbf{S[i, j]} \\
-    \quad\quad return $\log(\frac{1}{P(w)})$\\
-    \quad \textbf{else}  \\
-    \quad\quad return $\infty$\\
-    \\
     \\
     \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
     \quad $length \leftarrow \textsc{Length}(S)$ \\
@@ -61,15 +54,14 @@
     \\
     \quad \# \textit{Initialization: distance to zeroth letter is zero, distance to other letters is infinity} \\
     \quad $A[0] = 0$ \\
-    \quad $A[1 .. length] = \infty$ \\
+    \quad $A[1 .. length - 1] = \infty$ \\
     \\
     \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to (not including)} $length$ \textbf{do} \\
-    \quad\quad \textbf{if} $A[i] == \infty$ \\
-    \quad\quad\quad \# \textit{letter $i$ is unreachable from beginning of the word} \\
-    \quad\quad\quad\textbf{continue}  \\
-    \qquad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to (not including)} $length$ \textbf{do} \\
-    \quad\quad\quad w $\leftarrow$ \textbf{Get-Weight}(S, V, i, j) \\
-    \quad\quad\quad A[j] = min(A[j], A[i] + weight(i, j))
+    \quad\quad \textbf{if} $A[i] \neq \infty$ \\
+    \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
+    \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length - 1$ \textbf{do} \\
+    \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots length - 1] \in V$ \\
+    \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
     \\
     \\
     \quad \# \textit{Termination} \\
