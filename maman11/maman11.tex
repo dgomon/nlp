@@ -68,7 +68,7 @@
     \quad\quad\quad\textbf{continue}  \\
     \qquad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to (not including)} $length$ \textbf{do} \\
     \quad\quad\quad w $\leftarrow$ \textbf{Get-Weight}(S, V, i, j) \\
-    \quad\quad\quad A[j] = min(A[j], A[j] + weight(i, j))
+    \quad\quad\quad A[j] = min(A[j], A[i] + weight(i, j))
     \\
     \\
     \quad \# \textit{Termination} \\
