@@ -44,6 +44,37 @@
         &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k c(w_i)
     \end{align*}
 
+    \subsection*{b}
+    \begin{tabbing}
+    \textbf{function} \textsc{Get-Weight}($S, V, i, j$) \textbf{returns} \textit{weight} \\
+    \quad \textbf{if} $V$ contains \textbf{S[i, j]} \\
+    \quad\quad return P(w)\\
+    \quad \textbf{else}  \\
+    \quad\quad return $\infty$\\
+    \\
+    \\
+    \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
+    \quad $length \leftarrow \textsc{Length}(S)$ \\
+    \quad Create a cost vector $A[length]$ \\
+    \\
+    \quad \# \textit{Initialization: distance to zeroth letter is zero, distance to other letters is infinity} \\
+    \quad $A[0] = 0$ \\
+    \quad $A[1 .. length] = \infty$ \\
+    \\
+    \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to (not including)} $length$ \textbf{do} \\
+    \quad\quad \textbf{if} $A[i] == \infty$ \\
+    \quad\quad\quad \# \textit{letter $i$ is unreachable from beginning of the word} \\
+    \quad\quad\quad\textbf{continue}  \\
+    \qquad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to (not including)} $length$ \textbf{do} \\
+    \quad\quad\quad w $\leftarrow$ \textbf{Get-Weight}(S, V, i, j) \\
+    \quad\quad\quad A[j] = min(A[j], A[j] + weight(i, j))
+    \\
+    \\
+    \quad \# \textit{Termination} \\
+    \quad \textbf{return} $A[length - 1]$
+    \end{tabbing}
+
+
     \section*{Question 5}
     TODO
 
