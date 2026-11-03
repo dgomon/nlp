@@ -32,13 +32,13 @@
     We use the following equivalence chain:
     \begin{align*}
         \argmax_{w_1, \dots, w_k} \prod_{i=1}^k P(w_i)
-        &\iff \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
+        &= \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
             && \text{($a > b \iff \log a > \log b$)} \\
-        &\iff \argmax_{w_1, \dots, w_k} \sum_{i=1}^k \log P(w_i)
+        &= \argmax_{w_1, \dots, w_k} \sum_{i=1}^k \log P(w_i)
             && (\log(ab) = \log(a) + \log(b)) \\
-        &\iff \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
-        &\iff \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
-            && (\log(-a) = \log(\frac{1}{a})) \\
+        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
+        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
+            && (-\log(a) = \log(\frac{1}{a}))
     \end{align*}
 
     \section*{Question 5}
