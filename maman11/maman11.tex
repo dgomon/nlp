@@ -46,9 +46,10 @@
 
     \subsection*{b}
     \begin{tabbing}
-    \textbf{function} \textsc{Get-Weight}($S, V, i, j$) \textbf{returns} \textit{weight} \\
+    \textbf{function} \textsc{Get-Cost}($S, V, i, j$) \textbf{returns} \textit{cost} \\
+    \quad $w \leftarrow S[i, j]$ \\
     \quad \textbf{if} $V$ contains \textbf{S[i, j]} \\
-    \quad\quad return P(w)\\
+    \quad\quad return $\log(\frac{1}{P(w)})$\\
     \quad \textbf{else}  \\
     \quad\quad return $\infty$\\
     \\
