@@ -29,7 +29,9 @@
 
     \section*{Question 4}
     \subsection*{a}
-    We use the following equivalence chain:
+    Defining the cost of choosing a word $w_i$ as $c(w_i) =
+        -\log P(w_i) = \log \frac{1}{P(w_i)}$, where $c(w_i) \ge 0$ since $0 < P(w_i) \le 1$,
+        the problem is equivalent to minimizing the total cost $\sum_{i=1}^k c(w_i)$:
     \begin{align*}
         \argmax_{w_1, \dots, w_k} \prod_{i=1}^k P(w_i)
         &= \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
@@ -38,7 +40,8 @@
             && (\log(ab) = \log(a) + \log(b)) \\
         &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
         &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
-            && (-\log(a) = \log(\frac{1}{a}))
+            && (-\log(a) = \log(\frac{1}{a})) \\
+        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k c(w_i)
     \end{align*}
 
     \section*{Question 5}
