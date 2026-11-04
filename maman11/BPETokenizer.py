@@ -77,8 +77,10 @@ class BPETokenizer:
 
 if __name__ == '__main__':
     tokenizer = BPETokenizer()
-    text = "Alice was 7 years old, wasn't she? Alice was"
+    # text = "Alice was 7 years old, wasn't she? Alice was"
+    text = "abc abd abd abq bca"
 
     tokens = tokenizer.pre_tokenize(text)
     tokenizer.prepare_corpus(text)
-    tokenizer.train_bpe(5)
+    tokenizer.train_bpe(2)
+    i = 8
