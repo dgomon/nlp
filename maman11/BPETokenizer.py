@@ -16,17 +16,17 @@ class BPETokenizer:
 
     def __init__(self):
         self.vocabulary = None
-        self.bpe_ranks: dict[tuple[str, str], int] = None
+        self.bpe_ranks: dict[tuple[str, str], int] = {}
         self.pre_tokens_counter = None
         self.corpus = None
 
 
-    def prepare_corpus(self, text: str) -> List[str]:
+    def prepare_corpus(self, text: str):
         pre_tokens = self._pre_tokenize(text)
         self.corpus = Counter(tuple(token) for token in pre_tokens)
 
 
-    def train_bpe(self, n_merges):
+    def train_bpe(self, n_merges: int):
         # V <- all unique characters in C
         self.vocabulary = dict.fromkeys(chain.from_iterable(self.corpus))
         self.bpe_ranks = {}  # (t_l, t_r) -> merge order index
@@ -155,7 +155,8 @@ class BPETokenizer:
         return top_pair[0][0]
 
     @staticmethod
-    def _merge_tuple(word_tuple, t_l, t_r, merged_token):
+    def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str)\
+            -> Tuple[str, str]:
         new_word = []
         i = 0
         n = len(word_tuple)
