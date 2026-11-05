@@ -18,6 +18,24 @@
     \maketitle
 
     \section*{Question 1}
+    \subsection*{a}
+    s1 = "café": 'c' - U+0063, 'a' - U+0061, 'f' - U+0066, 'é' - U+00E9 \\
+    \verb|s2 = "cafe\u0301"|: 'c' - U+0063, 'a' - U+0061, 'f' - U+0066, 'e' - U+0065, U+0301 \\
+    len(s1) = 4 \\
+    len(s2) = 5
+
+    \subsection*{b}
+    s1: c, a, f: regular ascii characters, 1 byte per char, total 3 bytes. \\
+    é: unicode point U+00E9, falls in range U+0080 - U+07FF, thus requiring 2 bytes.
+    Overall: 3 + 2 = 5 bytes. \\
+    s1: c, a, f, e: regular ascii characters, 1 byte per char, total 4 bytes. \\
+    U+0301: falls in range U+0080 - U+07FF, thus requiring 2 bytes.
+    Overall: 4 + 2 = 6 bytes.
+    \subsection*{c}
+    TODO
+    \subsection*{d}
+    TODO
+    \subsection*{e}
     TODO
 
     \section*{Question 2}
