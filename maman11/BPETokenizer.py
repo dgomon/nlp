@@ -154,18 +154,19 @@ class BPETokenizer:
 
         return top_pair[0][0]
 
-    def _merge_tuple(self, word_tuple, t_l, t_r, merged_token):
-            new_word = []
-            i = 0
-            n = len(word_tuple)
-            while i < n:
-              if i < n - 1 and word_tuple[i] == t_l and word_tuple[i + 1] == t_r:
-                new_word.append(merged_token)
-                i += 2
-              else:
-                new_word.append(word_tuple[i])
-                i += 1
-            return tuple(new_word)
+    @staticmethod
+    def _merge_tuple(word_tuple, t_l, t_r, merged_token):
+        new_word = []
+        i = 0
+        n = len(word_tuple)
+        while i < n:
+          if i < n - 1 and word_tuple[i] == t_l and word_tuple[i + 1] == t_r:
+            new_word.append(merged_token)
+            i += 2
+          else:
+            new_word.append(word_tuple[i])
+            i += 1
+        return tuple(new_word)
 
 
 if __name__ == '__main__':
