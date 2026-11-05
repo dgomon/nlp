@@ -17,14 +17,19 @@ class BPETokenizer:
     bpe_ranks: dict[tuple[str, str], int] = {}
 
     def __init__(self):
+        self.base_corpus = None
         self.corpus = None
         self.vocabulary = None
         # Ordered by insertion, maps Pair to merge index for O(1) priority checks
         self.bpe_ranks: dict[tuple[str, str], int] = {}
 
+    def reset_corpus(self):
+        self.corpus = Counter(self.base_corpus)
+
     def prepare_corpus(self, text: str):
         pre_tokens = self._pre_tokenize(text)
-        self.corpus = Counter(tuple(token) for token in pre_tokens)
+        self.base_corpus = Counter(tuple(token) for token in pre_tokens)
+        self.reset_corpus()
 
     def train_bpe(self, n_merges: int):
         # V <- all unique characters in C
@@ -197,6 +202,7 @@ if __name__ == '__main__':
     # n_iters = (200,)
     stats = []
     for n in n_iters:
+        tokenizer.reset_corpus()
         tokenizer.train_bpe(n)
         n_tokens = len(tokenizer.bpe_ranks)
         n1 = len(tokenizer.tokenize(text_1))
