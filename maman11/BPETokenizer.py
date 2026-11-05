@@ -9,15 +9,16 @@ class BPETokenizer:
 
     Maintains internal vocabulary and merge rules learned during training.
     """
+    pattern = r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]"
 
     def __init__(self):
         self.vocabulary = None
+        self.bpe_ranks: dict[tuple[str, str], int] = None
         self.pre_tokens_counter = None
         self.corpus = None
 
     def pre_tokenize(self, text: str) -> List[str]:
-        pattern = r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]"
-        return re.findall(pattern, text)
+        return re.findall(self.pattern, text)
 
     def most_frequent_pair_of_adjacent_tokens(self) -> Tuple[str, str]:
         counter = Counter()
@@ -29,7 +30,7 @@ class BPETokenizer:
                 counter[(first, second)] += 1
         return counter.most_common(1)[0][0]
 
-    def prepare_corpus(self, text):
+    def prepare_corpus(self, text: str) -> List[str]:
         pre_tokens = self.pre_tokenize(text)
         self.corpus = Counter(tuple(token) for token in pre_tokens)
 
@@ -49,16 +50,19 @@ class BPETokenizer:
     def train_bpe(self, n_merges):
         # V <- all unique characters in C
         self.vocabulary = dict.fromkeys(chain.from_iterable(self.corpus))
+        self.bpe_ranks = {}  # (t_l, t_r) -> merge order index
 
-        for _ in range(n_merges):
+        for step in range(n_merges):
             # t_L, t_R <- Most frequent pair of adjacent tokens in C
             pair = self.most_frequent_pair_of_adjacent_tokens()
 
             if pair is None:
                 break
             t_l, t_r = pair
-
             t_new = t_l + t_r
+
+            # Save merge rule order
+            self.bpe_ranks[pair] = step
 
             # update the vocabulary
             self.vocabulary[t_new] = None
@@ -74,13 +78,80 @@ class BPETokenizer:
                     new_corpus[word] = freq
             self.corpus = new_corpus
 
+    def encode(self, word_tuple: tuple[str]) -> List[str]:
+        result = []
+        current_tuple = word_tuple
+
+        # Words of length <= 1 cannot be merged further
+        if len(current_tuple) < 2:
+            return list(current_tuple)
+
+        while True:
+            highest_rank = None
+            highest_rank_pair = None
+
+            # find the highest ranking pair (lowest numerical rank)
+            for i in range(len(word_tuple) - 1):
+                pair = (word_tuple[i], word_tuple[i + 1])
+                if pair in self.bpe_ranks:
+                    rank = self.bpe_ranks[pair]
+                    if highest_rank is None or rank < highest_rank:
+                        highest_rank = rank
+                        highest_rank_pair = pair
+
+            # No further valid merges exist
+            if highest_rank_pair is None:
+                break
+
+            # Construct the new tuple by merging all occurrences of highest_rank_pair
+            first, second = highest_rank_pair
+            new_tuple = []
+            i = 0
+            while i < len(current_tuple):
+                if (
+                    i < len(current_tuple) - 1
+                    and current_tuple[i] == first
+                    and current_tuple[i + 1] == second
+                ):
+                    new_tuple.append(first + second)
+                    i += 2
+                else:
+                    new_tuple.append(current_tuple[i])
+                    i += 1
+
+            current_tuple = tuple(new_tuple)
+
+            if len(current_tuple) == 1:
+                break
+
+        return result
+
+
+    def tokenize(self, text: str) -> List[str]:
+        # Split the text using the same regex applied during training
+        pre_tokens = self.pre_tokenize(text)
+        result = []
+
+        for pre_token in pre_tokens:
+            # Segment into characters
+            word = tuple(pre_token)
+
+            # Run BPE encoder
+            encoded_tokens = self.encode(word)
+
+            # Run the BPE merge rules
+            result.append(encoded_tokens)
+
+        return result
+
 
 if __name__ == '__main__':
     tokenizer = BPETokenizer()
-    # text = "Alice was 7 years old, wasn't she? Alice was"
+
     text = "abc abd abd abq bca"
 
     tokens = tokenizer.pre_tokenize(text)
     tokenizer.prepare_corpus(text)
     tokenizer.train_bpe(2)
+    tokenizer.tokenize("Alice was 7 years old, wasn't she? Alice was")
     i = 8
