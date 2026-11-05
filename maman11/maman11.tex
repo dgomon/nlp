@@ -5,9 +5,14 @@
 \usepackage{amssymb}
 \usepackage{amsopn}
 \usepackage{amstext}
+\usepackage{tabularx}
+\usepackage{booktabs} % For professional-quality horizontal rules
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \numberwithin{equation}{section}
+
+
+
 
 \title{Natural Language Processing \\ \large Maman 11}
 \author{Dmitri Gomon}
@@ -75,9 +80,27 @@
     NFD to another without a consistent policy can leave equivalent strings
     represented differently.
 
+    \clearpage
 
     \section*{Question 2}
-    TODO
+    \subsection*{a}
+
+    \begin{table}[htbp]
+      \centering
+      \begin{tabularx}{\textwidth}{l X X}
+        \toprule
+        \textbf{Category} & \textbf{Description} & \textbf{Notes / Example} \\
+        \midrule
+        NFC & Normalization Form C composes characters into single code points where possible. & Visual rendering is unchanged; accented letters become single composite glyphs. \\
+        \addlinespace
+        NFD & Normalization Form D decomposes characters into a base character plus combining marks. & Useful for character decomposition, accents become separate code points. \\
+        \bottomrule
+      \end{tabularx}
+      \caption{Comparison of Unicode Normalization Forms}
+      \label{tab:unicode-norm}
+    \end{table}
+
+    \subsection*{b}
 
 
     \section*{Question 3}
