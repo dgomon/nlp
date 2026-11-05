@@ -53,7 +53,7 @@
 
     Byte encoding of s1 is 63 61 66 C3 A9 \\
 
-    Byte encoding  of s2 is 63 61 66 65 CC 81.\\
+    Byte encoding  of s2 is 63 61 66 65 CC 81\\
 
     s1 might merge into a single token for "café" or subwords containing é, whereas s2
     will likely merge "cafe" as a base word and leave the combining
@@ -62,7 +62,6 @@
 
 
     \subsection*{e}
-
 
     Unicode normalization guarantees that strings that render the same on the screen will
     also be encoded into identical sequences of bytes and thus tokenized uniformly.
@@ -75,7 +74,6 @@
     characters in the original text. In addition, applying NFC to one string and
     NFD to another without a consistent policy can leave equivalent strings
     represented differently.
-
 
 
     \section*{Question 2}
