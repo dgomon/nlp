@@ -82,8 +82,7 @@ class BPETokenizer:
 
         return result
 
-    def _encode(self, word_tuple: tuple[str]) -> tuple[str]:
-        result = []
+    def _encode(self, word_tuple: tuple[str, ...]) -> tuple[str, ...]:
         current_tuple = word_tuple
 
         # Words of length <= 1 cannot be merged further
@@ -144,12 +143,6 @@ class BPETokenizer:
 
         if not top_pair:
             raise ValueError("No adjacent pairs found in corpus.")
-
-        for word in self.corpus:
-            for i in range(len(word) - 1):
-                first = word[i]
-                second = word[i + 1]
-                counter[(first, second)] += 1
 
         return top_pair[0][0]
 
