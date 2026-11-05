@@ -41,6 +41,7 @@ class BPETokenizer:
 
                 if pair is None:
                     break
+
                 t_l, t_r = pair
                 t_new = t_l + t_r
 
@@ -197,6 +198,8 @@ if __name__ == '__main__':
     text_1 = "Alice was beginning to get very tired."
     text_2 = "The rabbit disappeared down the hole."
     text_3 = "Modern language models are based on the Transformer architecture."
+
+
 
 
     i = 8
