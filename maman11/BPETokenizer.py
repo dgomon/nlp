@@ -157,8 +157,7 @@ class BPETokenizer:
         return top_pair[0][0]
 
     @staticmethod
-    def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str)\
-            -> Tuple[str, str]:
+    def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str) -> Tuple[str, str]:
         new_word = []
         i = 0
         n = len(word_tuple)
