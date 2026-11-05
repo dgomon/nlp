@@ -21,11 +21,9 @@ class BPETokenizer:
         self.pre_tokens_counter = None
         self.corpus = None
 
-
     def prepare_corpus(self, text: str):
         pre_tokens = self._pre_tokenize(text)
         self.corpus = Counter(tuple(token) for token in pre_tokens)
-
 
     def train_bpe(self, n_merges: int):
         # V <- all unique characters in C
@@ -66,7 +64,24 @@ class BPETokenizer:
                 # Display current merged token and resulting vocab size
                 pbar.set_postfix(pair=f"({t_l}, {t_r})", vocab=len(self.vocabulary))
 
-    def encode(self, word_tuple: tuple[str]) -> List[str]:
+    def tokenize(self, text: str) -> List[str]:
+        # Split the text using the same regex applied during training
+        pre_tokens = self._pre_tokenize(text)
+        result = []
+
+        for pre_token in pre_tokens:
+            # Segment into characters
+            word = tuple(pre_token)
+
+            # Run BPE encoder
+            encoded_tokens = self._encode(word)
+
+            # Run the BPE merge rules
+            result.append(encoded_tokens)
+
+        return result
+
+    def _encode(self, word_tuple: tuple[str]) -> List[str]:
         result = []
         current_tuple = word_tuple
 
@@ -111,24 +126,6 @@ class BPETokenizer:
 
             if len(current_tuple) == 1:
                 break
-
-        return result
-
-
-    def tokenize(self, text: str) -> List[str]:
-        # Split the text using the same regex applied during training
-        pre_tokens = self._pre_tokenize(text)
-        result = []
-
-        for pre_token in pre_tokens:
-            # Segment into characters
-            word = tuple(pre_token)
-
-            # Run BPE encoder
-            encoded_tokens = self.encode(word)
-
-            # Run the BPE merge rules
-            result.append(encoded_tokens)
 
         return result
 
@@ -198,6 +195,7 @@ if __name__ == '__main__':
     text_2 = "The rabbit disappeared down the hole."
     text_3 = "Modern language models are based on the Transformer architecture."
 
+    encoded_1 = tokenizer._encode(text_1)
 
 
 
