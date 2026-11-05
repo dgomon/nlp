@@ -16,6 +16,7 @@ class BPETokenizer:
 
     def __init__(self):
         self.vocabulary = None
+        # Ordered by insertion, maps Pair to merge index for O(1) priority checks
         self.bpe_ranks: dict[tuple[str, str], int] = {}
         self.pre_tokens_counter = None
         self.corpus = None
@@ -177,4 +178,6 @@ if __name__ == '__main__':
     tokens = tokenizer.prepare_corpus(alice_raw)
     tokenizer.train_bpe(300)
 
+
+    tokenizer.bpe_ranks
     i = 8
