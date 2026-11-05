@@ -175,7 +175,7 @@ if __name__ == '__main__':
     tokenizer = BPETokenizer()
 
     alice_raw = gutenberg.raw('carroll-alice.txt')
-    tokens = tokenizer.prepare_corpus(alice_raw)
+    tokenizer.prepare_corpus(alice_raw)
     tokenizer.train_bpe(300)
 
     first_10_pairs = list(islice(tokenizer.bpe_ranks.items(), 10))
