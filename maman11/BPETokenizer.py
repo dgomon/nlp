@@ -3,7 +3,6 @@ from collections import Counter
 from itertools import chain, pairwise, islice
 from typing import List, Tuple
 
-import matplotlib
 import matplotlib.pyplot as plt
 from nltk.corpus import gutenberg
 from tqdm import tqdm
@@ -18,11 +17,10 @@ class BPETokenizer:
     bpe_ranks: dict[tuple[str, str], int] = {}
 
     def __init__(self):
+        self.corpus = None
         self.vocabulary = None
         # Ordered by insertion, maps Pair to merge index for O(1) priority checks
         self.bpe_ranks: dict[tuple[str, str], int] = {}
-        self.pre_tokens_counter = None
-        self.corpus = None
 
     def prepare_corpus(self, text: str):
         pre_tokens = self._pre_tokenize(text)
@@ -80,7 +78,7 @@ class BPETokenizer:
             encoded_tokens = self._encode(word)
 
             # Run the BPE merge rules
-            result.append(encoded_tokens)
+            result.extend(encoded_tokens)
 
         return result
 
@@ -148,7 +146,6 @@ class BPETokenizer:
             raise ValueError("No adjacent pairs found in corpus.")
 
         for word in self.corpus:
-            # for i in range(word.)
             for i in range(len(word) - 1):
                 first = word[i]
                 second = word[i + 1]
@@ -183,7 +180,6 @@ def print_ranks(header: str, ranks: list[tuple[tuple[str, str], int]]) -> None:
 
 if __name__ == '__main__':
 
-    print(matplotlib.get_backend())
     tokenizer = BPETokenizer()
 
     alice_raw = gutenberg.raw('carroll-alice.txt')
@@ -205,7 +201,7 @@ if __name__ == '__main__':
         print(tokenized)
 
     n_iters = (50, 100, 200, 500, 1000)
-    # n_iters = (10, 200, 200)
+    # n_iters = (200,)
     stats = []
     for n in n_iters:
         tokenizer.train_bpe(n)
@@ -218,19 +214,38 @@ if __name__ == '__main__':
     # Unpack columns for plotting
     iters, n_tokens, len_t1, len_t2, len_t3 = zip(*stats)
 
-    fig, ax = plt.subplots(figsize=(8, 5))
+    fig, (ax_vocab, ax_tokens) = plt.subplots(
+        2, 1, figsize=(8, 7), sharex=True, gridspec_kw={"height_ratios": [1, 1.2]}
+    )
 
-    ax.plot(iters, len_t1, marker="o", label="Text 1")
-    ax.plot(iters, len_t2, marker="s", label="Text 2")
-    ax.plot(iters, len_t3, marker="^", label="Text 3")
+    # Top Subplot: Vocabulary Growth
+    ax_vocab.plot(
+        iters,
+        n_tokens,
+        marker="D",
+        color="#ff7f0e",
+        linewidth=2,
+        label="Vocab Size",
+    )
+    ax_vocab.set_ylabel("Vocab Size")
+    ax_vocab.set_title("Vocabulary Size & Sentence Compression vs. Merges")
+    ax_vocab.grid(True, linestyle="--", alpha=0.5)
+    ax_vocab.legend(loc="upper left")
 
-    ax.set_title("Tokenized Sequence Length vs. BPE Merge Operations")
-    ax.set_xlabel("Number of Merges (n_iters)")
-    ax.set_ylabel("Total Tokens Produced")
-    ax.grid(True, linestyle="--", alpha=0.6)
-    ax.legend()
+    # Bottom Subplot: Sentence Compression
+    ax_tokens.plot(
+        iters, len_t1, marker="o", color="#1f77b4", label="Sentence 1 Tokens"
+    )
+    ax_tokens.plot(
+        iters, len_t2, marker="s", color="#2ca02c", label="Sentence 2 Tokens"
+    )
+    ax_tokens.plot(
+        iters, len_t3, marker="^", color="#d62728", label="Sentence 3 Tokens"
+    )
+    ax_tokens.set_xlabel("Number of Merges ($n$)")
+    ax_tokens.set_ylabel("Tokens per Sentence")
+    ax_tokens.grid(True, linestyle="--", alpha=0.5)
+    ax_tokens.legend(loc="upper right")
 
     plt.tight_layout()
     plt.show()
-
-    i = 8
