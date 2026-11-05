@@ -1,6 +1,6 @@
 import re
 from collections import Counter
-from itertools import chain, pairwise
+from itertools import chain, pairwise, islice
 from typing import List, Tuple
 
 from tqdm import tqdm
@@ -178,6 +178,22 @@ if __name__ == '__main__':
     tokens = tokenizer.prepare_corpus(alice_raw)
     tokenizer.train_bpe(300)
 
+    first_10_pairs = list(islice(tokenizer.bpe_ranks.items(), 10))
+    print("First 10 pairs:")
+    print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
+    print("-" * 45)
+    for (left, right), rank in first_10_pairs:
+        pair_str = f"('{left}', '{right}')"
+        print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
 
-    tokenizer.bpe_ranks
+    print("")
+    print("Last 10 pairs:")
+    last_10_pairs = list(islice(reversed(tokenizer.bpe_ranks.items()), 10))[::-1]
+    print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
+    print("-" * 45)
+    for (left, right), rank in last_10_pairs:
+        pair_str = f"('{left}', '{right}')"
+        print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
+
+
     i = 8
