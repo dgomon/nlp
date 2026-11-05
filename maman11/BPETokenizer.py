@@ -1,20 +1,19 @@
 import re
 from collections import Counter
 from itertools import chain, pairwise, islice
-from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 from nltk.corpus import gutenberg
 from tqdm import tqdm
 
 
+_TOKEN_PATTERN = re.compile(r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]")
+
 class BPETokenizer:
     """Byte Pair Encoding (BPE) Tokenizer implementation.
 
     Maintains internal vocabulary and merge rules learned during training.
     """
-    pattern = r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]"
-    bpe_ranks: dict[tuple[str, str], int] = {}
 
     def __init__(self):
         self.base_corpus = None
@@ -70,7 +69,7 @@ class BPETokenizer:
                 # Display current merged token and resulting vocab size
                 pbar.set_postfix(pair=f"({t_l}, {t_r})", vocab=len(self.vocabulary))
 
-    def tokenize(self, text: str) -> List[str]:
+    def tokenize(self, text: str) -> list[str]:
         # Split the text using the same regex applied during training
         pre_tokens = self._pre_tokenize(text)
         result = []
@@ -134,11 +133,12 @@ class BPETokenizer:
 
         return current_tuple
 
-    def _pre_tokenize(self, text: str) -> List[str]:
-        return re.findall(self.pattern, text)
+    @staticmethod
+    def _pre_tokenize(text: str) -> list[str]:
+        return _TOKEN_PATTERN.findall(text)
 
-    def _get_most_frequent_pair(self) -> Tuple[str, str]:
-        counter: Counter[Tuple[str, str]] = Counter()
+    def _get_most_frequent_pair(self) -> tuple[str, str]:
+        counter: Counter[tuple[str, str]] = Counter()
 
         for word in self.corpus:
             counter.update(pairwise(word))
@@ -152,7 +152,7 @@ class BPETokenizer:
         return top_pair[0][0]
 
     @staticmethod
-    def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str) -> Tuple[str, str]:
+    def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str) -> tuple[str, ...]:
         new_word = []
         i = 0
         n = len(word_tuple)
