@@ -1,7 +1,10 @@
 import re
 from collections import Counter
-from itertools import chain
+from itertools import chain, pairwise
 from typing import List, Tuple
+import nltk
+from nltk.corpus import gutenberg
+
 
 
 class BPETokenizer:
@@ -17,21 +20,9 @@ class BPETokenizer:
         self.pre_tokens_counter = None
         self.corpus = None
 
-    def pre_tokenize(self, text: str) -> List[str]:
-        return re.findall(self.pattern, text)
-
-    def most_frequent_pair_of_adjacent_tokens(self) -> Tuple[str, str]:
-        counter = Counter()
-        for word in self.corpus:
-            # for i in range(word.)
-            for i in range(len(word) - 1):
-                first = word[i]
-                second = word[i + 1]
-                counter[(first, second)] += 1
-        return counter.most_common(1)[0][0]
 
     def prepare_corpus(self, text: str) -> List[str]:
-        pre_tokens = self.pre_tokenize(text)
+        pre_tokens = self._pre_tokenize(text)
         self.corpus = Counter(tuple(token) for token in pre_tokens)
 
     def merge_tuple(self, word_tuple, t_l, t_r, merged_token):
@@ -54,7 +45,7 @@ class BPETokenizer:
 
         for step in range(n_merges):
             # t_L, t_R <- Most frequent pair of adjacent tokens in C
-            pair = self.most_frequent_pair_of_adjacent_tokens()
+            pair = self._get_most_frequent_pair()
 
             if pair is None:
                 break
@@ -129,7 +120,7 @@ class BPETokenizer:
 
     def tokenize(self, text: str) -> List[str]:
         # Split the text using the same regex applied during training
-        pre_tokens = self.pre_tokenize(text)
+        pre_tokens = self._pre_tokenize(text)
         result = []
 
         for pre_token in pre_tokens:
@@ -144,14 +135,43 @@ class BPETokenizer:
 
         return result
 
+    def _pre_tokenize(self, text: str) -> List[str]:
+        return re.findall(self.pattern, text)
+
+    def _get_most_frequent_pair(self) -> Tuple[str, str]:
+        counter: Counter[Tuple[str, str]] = Counter()
+
+        for word in self.corpus:
+            counter.update(pairwise(word))
+
+        # Handle edge case where no pairs exist
+        top_pair = counter.most_common(1)
+
+        if not top_pair:
+            raise ValueError("No adjacent pairs found in corpus.")
+
+        for word in self.corpus:
+            # for i in range(word.)
+            for i in range(len(word) - 1):
+                first = word[i]
+                second = word[i + 1]
+                counter[(first, second)] += 1
+
+        return top_pair[0][0]
+
+
 
 if __name__ == '__main__':
     tokenizer = BPETokenizer()
 
-    text = "abc abd abd abq bca"
+    # text = "abc abd abd abq bca"
+    # tokenizer.prepare_corpus(text)
+    # tokenizer.train_bpe(2)
+    # tokenizer.tokenize("Alice was 7 years old, wasn't she? Alice was")
 
-    tokens = tokenizer.pre_tokenize(text)
-    tokenizer.prepare_corpus(text)
-    tokenizer.train_bpe(2)
-    tokenizer.tokenize("Alice was 7 years old, wasn't she? Alice was")
+
+    alice_raw = gutenberg.raw('carroll-alice.txt')
+    tokens = tokenizer.prepare_corpus(alice_raw)
+    tokenizer.train_bpe(300)
+
     i = 8
