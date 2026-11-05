@@ -171,6 +171,16 @@ class BPETokenizer:
         return tuple(new_word)
 
 
+def print_ranks(header: str, ranks: list[tuple[tuple[str, str], int]]) -> None:
+    print(header)
+    print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
+    print("-" * 45)
+
+    for (left, right), rank in ranks:
+        pair_str = f"('{left}', '{right}')"
+        print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
+
+
 if __name__ == '__main__':
     tokenizer = BPETokenizer()
 
@@ -179,21 +189,14 @@ if __name__ == '__main__':
     tokenizer.train_bpe(300)
 
     first_10_pairs = list(islice(tokenizer.bpe_ranks.items(), 10))
-    print("First 10 pairs:")
-    print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
-    print("-" * 45)
-    for (left, right), rank in first_10_pairs:
-        pair_str = f"('{left}', '{right}')"
-        print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
+    print_ranks("First 10 pairs:", first_10_pairs)
 
-    print("")
-    print("Last 10 pairs:")
     last_10_pairs = list(islice(reversed(tokenizer.bpe_ranks.items()), 10))[::-1]
-    print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
-    print("-" * 45)
-    for (left, right), rank in last_10_pairs:
-        pair_str = f"('{left}', '{right}')"
-        print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
+    print_ranks("Last 10 pairs:", first_10_pairs)
+
+    text_1 = "Alice was beginning to get very tired."
+    text_2 = "The rabbit disappeared down the hole."
+    text_3 = "Modern language models are based on the Transformer architecture."
 
 
     i = 8
