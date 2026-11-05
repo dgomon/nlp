@@ -3,8 +3,10 @@ from collections import Counter
 from itertools import chain, pairwise, islice
 from typing import List, Tuple
 
-from tqdm import tqdm
+import matplotlib
+import matplotlib.pyplot as plt
 from nltk.corpus import gutenberg
+from tqdm import tqdm
 
 
 class BPETokenizer:
@@ -13,6 +15,7 @@ class BPETokenizer:
     Maintains internal vocabulary and merge rules learned during training.
     """
     pattern = r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]"
+    bpe_ranks: dict[tuple[str, str], int] = {}
 
     def __init__(self):
         self.vocabulary = None
@@ -179,11 +182,13 @@ def print_ranks(header: str, ranks: list[tuple[tuple[str, str], int]]) -> None:
 
 
 if __name__ == '__main__':
+
+    print(matplotlib.get_backend())
     tokenizer = BPETokenizer()
 
     alice_raw = gutenberg.raw('carroll-alice.txt')
     tokenizer.prepare_corpus(alice_raw)
-    tokenizer.train_bpe(300)
+    tokenizer.train_bpe(10)
 
     first_10_pairs = list(islice(tokenizer.bpe_ranks.items(), 10))
     print_ranks("First 10 pairs:", first_10_pairs)
@@ -191,14 +196,41 @@ if __name__ == '__main__':
     last_10_pairs = list(islice(reversed(tokenizer.bpe_ranks.items()), 10))[::-1]
     print_ranks("Last 10 pairs:", first_10_pairs)
 
+    text_1 = "Alice was beginning to get very tired."
+    text_2 = "The rabbit disappeared down the hole."
+    text_3 = "Modern language models are based on the Transformer architecture."
 
-    tokenized_1 = tokenizer.tokenize("Alice was beginning to get very tired.")
-    print(tokenized_1)
-    tokenized_2 = tokenizer.tokenize("The rabbit disappeared down the hole.")
-    print(tokenized_2)
-    tokenized_3 = tokenizer.tokenize("Modern language models are based on the Transformer architecture.")
-    print(tokenized_3)
+    for text in [text_1, text_2, text_3]:
+        tokenized = tokenizer.tokenize(text)
+        print(tokenized)
 
+    n_iters = (50, 100, 200, 500, 1000)
+    # n_iters = (10, 200, 200)
+    stats = []
+    for n in n_iters:
+        tokenizer.train_bpe(n)
+        n_tokens = len(tokenizer.bpe_ranks)
+        n1 = len(tokenizer.tokenize(text_1))
+        n2 = len(tokenizer.tokenize(text_2))
+        n3 = len(tokenizer.tokenize(text_3))
+        stats.append((n, n_tokens, n1, n2, n3))
 
+    # Unpack columns for plotting
+    iters, n_tokens, len_t1, len_t2, len_t3 = zip(*stats)
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+
+    ax.plot(iters, len_t1, marker="o", label="Text 1")
+    ax.plot(iters, len_t2, marker="s", label="Text 2")
+    ax.plot(iters, len_t3, marker="^", label="Text 3")
+
+    ax.set_title("Tokenized Sequence Length vs. BPE Merge Operations")
+    ax.set_xlabel("Number of Merges (n_iters)")
+    ax.set_ylabel("Total Tokens Produced")
+    ax.grid(True, linestyle="--", alpha=0.6)
+    ax.legend()
+
+    plt.tight_layout()
+    plt.show()
 
     i = 8
