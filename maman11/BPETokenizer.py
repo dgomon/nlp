@@ -1,11 +1,10 @@
 import re
 from collections import Counter
-from itertools import chain, pairwise, islice
+from itertools import chain, pairwise
 
 import matplotlib.pyplot as plt
 from nltk.corpus import gutenberg
 from tqdm import tqdm
-
 
 _TOKEN_PATTERN = re.compile(r"[a-zA-Z]+|[0-9]+|[^a-zA-Z0-9\s]")
 
@@ -133,10 +132,6 @@ class BPETokenizer:
 
         return current_tuple
 
-    @staticmethod
-    def _pre_tokenize(text: str) -> list[str]:
-        return _TOKEN_PATTERN.findall(text)
-
     def _get_most_frequent_pair(self) -> tuple[str, str] | None:
         counter: Counter[tuple[str, str]] = Counter()
 
@@ -146,6 +141,10 @@ class BPETokenizer:
         top_pair = counter.most_common(1)
 
         return top_pair[0][0] if top_pair else None
+
+    @staticmethod
+    def _pre_tokenize(text: str) -> list[str]:
+        return _TOKEN_PATTERN.findall(text)
 
     @staticmethod
     def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str) -> tuple[str, ...]:
@@ -161,7 +160,6 @@ class BPETokenizer:
             i += 1
         return tuple(new_word)
 
-
 def print_ranks(header: str, ranks: list[tuple[tuple[str, str], int]]) -> None:
     print(header)
     print(f"{'Rank':<6} {'Pair':<20} {'Merged':<15}")
@@ -170,7 +168,6 @@ def print_ranks(header: str, ranks: list[tuple[tuple[str, str], int]]) -> None:
     for (left, right), rank in ranks:
         pair_str = f"('{left}', '{right}')"
         print(f"{rank:<6} {pair_str:<20} {left + right:<15}")
-
 
 if __name__ == '__main__':
 
@@ -193,7 +190,6 @@ if __name__ == '__main__':
         print(tokenized)
 
     n_iters = (50, 100, 200, 500, 1000)
-    # n_iters = (200,)
     stats = []
     for n in n_iters:
         tokenizer.reset_corpus()

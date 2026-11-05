@@ -28,5 +28,5 @@ def test_pre_tokenize_assignment_example(tokenizer):
         "she",
         "?",
     ]
-    assert tokenizer.pre_tokenize(text) == expected
+    assert tokenizer._pre_tokenize(text) == expected
 
