@@ -81,21 +81,21 @@ class BPETokenizer:
 
         return result
 
-    def _encode(self, word_tuple: tuple[str]) -> List[str]:
+    def _encode(self, word_tuple: tuple[str]) -> tuple[str]:
         result = []
         current_tuple = word_tuple
 
         # Words of length <= 1 cannot be merged further
         if len(current_tuple) < 2:
-            return list(current_tuple)
+            return current_tuple
 
         while True:
             highest_rank = None
             highest_rank_pair = None
 
             # find the highest ranking pair (lowest numerical rank)
-            for i in range(len(word_tuple) - 1):
-                pair = (word_tuple[i], word_tuple[i + 1])
+            for i in range(len(current_tuple) - 1):
+                pair = (current_tuple[i], current_tuple[i + 1])
                 if pair in self.bpe_ranks:
                     rank = self.bpe_ranks[pair]
                     if highest_rank is None or rank < highest_rank:
@@ -127,7 +127,7 @@ class BPETokenizer:
             if len(current_tuple) == 1:
                 break
 
-        return result
+        return current_tuple
 
     def _pre_tokenize(self, text: str) -> List[str]:
         return re.findall(self.pattern, text)
@@ -191,11 +191,13 @@ if __name__ == '__main__':
     last_10_pairs = list(islice(reversed(tokenizer.bpe_ranks.items()), 10))[::-1]
     print_ranks("Last 10 pairs:", first_10_pairs)
 
-    text_1 = "Alice was beginning to get very tired."
-    text_2 = "The rabbit disappeared down the hole."
-    text_3 = "Modern language models are based on the Transformer architecture."
 
-    encoded_1 = tokenizer._encode(text_1)
+    tokenized_1 = tokenizer.tokenize("Alice was beginning to get very tired.")
+    print(tokenized_1)
+    tokenized_2 = tokenizer.tokenize("The rabbit disappeared down the hole.")
+    print(tokenized_2)
+    tokenized_3 = tokenizer.tokenize("Modern language models are based on the Transformer architecture.")
+    print(tokenized_3)
 
 
 
