@@ -23,13 +23,13 @@ class BPETokenizer:
         # Ordered by insertion, maps Pair to merge index for O(1) priority checks
         self.bpe_ranks: dict[tuple[str, str], int] = {}
 
-    def reset_corpus(self):
-        self.corpus = Counter(self.base_corpus)
-
     def prepare_corpus(self, text: str):
         pre_tokens = self._pre_tokenize(text)
         self.base_corpus = Counter(tuple(token) for token in pre_tokens)
         self.reset_corpus()
+
+    def reset_corpus(self):
+        self.corpus = Counter(self.base_corpus)
 
     def train_bpe(self, n_merges: int):
         # V <- all unique characters in C
