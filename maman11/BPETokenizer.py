@@ -180,11 +180,9 @@ if __name__ == '__main__':
     tokenizer.prepare_corpus(alice_raw)
     tokenizer.train_bpe(10)
 
-    first_10_pairs = list(islice(tokenizer.bpe_ranks.items(), 10))
-    print_ranks("First 10 pairs:", first_10_pairs)
-
-    last_10_pairs = list(islice(reversed(tokenizer.bpe_ranks.items()), 10))[::-1]
-    print_ranks("Last 10 pairs:", first_10_pairs)
+    all_ranks = list(tokenizer.bpe_ranks.items())
+    print_ranks("First 10 pairs:", all_ranks[:10])
+    print_ranks("Last 10 pairs:", all_ranks[-10:])
 
     text_1 = "Alice was beginning to get very tired."
     text_2 = "The rabbit disappeared down the hole."
