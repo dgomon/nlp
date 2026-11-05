@@ -2,9 +2,9 @@ import re
 from collections import Counter
 from itertools import chain, pairwise
 from typing import List, Tuple
-import nltk
-from nltk.corpus import gutenberg
 
+from tqdm import tqdm
+from nltk.corpus import gutenberg
 
 
 class BPETokenizer:
@@ -25,49 +25,44 @@ class BPETokenizer:
         pre_tokens = self._pre_tokenize(text)
         self.corpus = Counter(tuple(token) for token in pre_tokens)
 
-    def merge_tuple(self, word_tuple, t_l, t_r, merged_token):
-        new_word = []
-        i = 0
-        n = len(word_tuple)
-        while i < n:
-          if i < n - 1 and word_tuple[i] == t_l and word_tuple[i + 1] == t_r:
-            new_word.append(merged_token)
-            i += 2
-          else:
-            new_word.append(word_tuple[i])
-            i += 1
-        return tuple(new_word)
 
     def train_bpe(self, n_merges):
         # V <- all unique characters in C
         self.vocabulary = dict.fromkeys(chain.from_iterable(self.corpus))
         self.bpe_ranks = {}  # (t_l, t_r) -> merge order index
 
-        for step in range(n_merges):
-            # t_L, t_R <- Most frequent pair of adjacent tokens in C
-            pair = self._get_most_frequent_pair()
+        with tqdm(
+                total=n_merges, desc="Training BPE", unit="merge", dynamic_ncols=True
+            ) as pbar:
+            for step in range(n_merges):
+                # t_L, t_R <- Most frequent pair of adjacent tokens in C
+                pair = self._get_most_frequent_pair()
 
-            if pair is None:
-                break
-            t_l, t_r = pair
-            t_new = t_l + t_r
+                if pair is None:
+                    break
+                t_l, t_r = pair
+                t_new = t_l + t_r
 
-            # Save merge rule order
-            self.bpe_ranks[pair] = step
+                # Save merge rule order
+                self.bpe_ranks[pair] = step
 
-            # update the vocabulary
-            self.vocabulary[t_new] = None
+                # update the vocabulary
+                self.vocabulary[t_new] = None
 
-            # Replace each occurrence of t_L , t_R in C with t_NEW
-            new_corpus = {}
-            for word, freq in self.corpus.items():
-                # fast pre-filter to bypass calling _merge_tuple on words that have no chance of containing the pair
-                if t_l in word and t_r in word:
-                    new_word = self.merge_tuple(word, t_l, t_r, t_new)
-                    new_corpus[new_word] = new_corpus.get(new_word, 0) + freq
-                else:
-                    new_corpus[word] = freq
-            self.corpus = new_corpus
+                # Replace each occurrence of t_L , t_R in C with t_NEW
+                new_corpus = {}
+                for word, freq in self.corpus.items():
+                    # fast pre-filter to bypass calling _merge_tuple on words that have no chance of containing the pair
+                    if t_l in word and t_r in word:
+                        new_word = self._merge_tuple(word, t_l, t_r, t_new)
+                        new_corpus[new_word] = new_corpus.get(new_word, 0) + freq
+                    else:
+                        new_corpus[word] = freq
+                self.corpus = new_corpus
+
+                pbar.update(1)
+                # Display current merged token and resulting vocab size
+                pbar.set_postfix(pair=f"({t_l}, {t_r})", vocab=len(self.vocabulary))
 
     def encode(self, word_tuple: tuple[str]) -> List[str]:
         result = []
@@ -159,16 +154,22 @@ class BPETokenizer:
 
         return top_pair[0][0]
 
+    def _merge_tuple(self, word_tuple, t_l, t_r, merged_token):
+            new_word = []
+            i = 0
+            n = len(word_tuple)
+            while i < n:
+              if i < n - 1 and word_tuple[i] == t_l and word_tuple[i + 1] == t_r:
+                new_word.append(merged_token)
+                i += 2
+              else:
+                new_word.append(word_tuple[i])
+                i += 1
+            return tuple(new_word)
 
 
 if __name__ == '__main__':
     tokenizer = BPETokenizer()
-
-    # text = "abc abd abd abq bca"
-    # tokenizer.prepare_corpus(text)
-    # tokenizer.train_bpe(2)
-    # tokenizer.tokenize("Alice was 7 years old, wasn't she? Alice was")
-
 
     alice_raw = gutenberg.raw('carroll-alice.txt')
     tokens = tokenizer.prepare_corpus(alice_raw)
