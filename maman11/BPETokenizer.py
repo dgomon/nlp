@@ -137,19 +137,15 @@ class BPETokenizer:
     def _pre_tokenize(text: str) -> list[str]:
         return _TOKEN_PATTERN.findall(text)
 
-    def _get_most_frequent_pair(self) -> tuple[str, str]:
+    def _get_most_frequent_pair(self) -> tuple[str, str] | None:
         counter: Counter[tuple[str, str]] = Counter()
 
         for word in self.corpus:
             counter.update(pairwise(word))
 
-        # Handle edge case where no pairs exist
         top_pair = counter.most_common(1)
 
-        if not top_pair:
-            raise ValueError("No adjacent pairs found in corpus.")
-
-        return top_pair[0][0]
+        return top_pair[0][0] if top_pair else None
 
     @staticmethod
     def _merge_tuple(word_tuple: tuple, t_l: str, t_r: str, merged_token: str) -> tuple[str, ...]:
