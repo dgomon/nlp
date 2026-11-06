@@ -103,12 +103,12 @@
         &
             p, a, i, n, t, e, r, g
         &
-        \textbf{in: 27} \newline
-        pa: 14 \newline
-        ai: 14 \newline
-        nt: 22 \newline
+        \textbf{(i,n): 27} \newline
+        (p,a): 14 \newline
+        (a,i): 14 \newline
+        (n,t): 22 \newline
         &
-        i, n $\to$ in
+        (i, n) $\to$ in
         \\
         \midrule
             2
@@ -121,11 +121,11 @@
         &
             p, a, i, n, t, e, r, g, in
         &
-        \textbf{int: 22} \newline
-        pa: 14 \newline
-        ain: 14 \newline
+        \textbf{(in,t): 22} \newline
+        (p,a): 14 \newline
+        (a,in): 14 \newline
         &
-        in, t $\to$ int
+        (in, t) $\to$ int
         \\
         \midrule
             3
@@ -138,10 +138,10 @@
         &
             p, a, i, n, t, e, r, g, in, int
         &
-        \textbf{pa: 14} \newline
-        aint: 14 \newline
+        \textbf{(p,a): 14} \newline
+        (a,int): 14 \newline
         &
-        p, a $\to$ pa
+        (p, a) $\to$ pa
         \\
         \midrule
             4
@@ -154,10 +154,10 @@
         &
             p, a, i, n, t, e, r, g, in, int, pa
         &
-        \textbf{paint: 14} \newline
-        rint: 8 \newline
+        \textbf{(pa,int): 14} \newline
+        (r,int): 8 \newline
         &
-        pa, int $\to$ paint
+        (pa, int) $\to$ paint
         \\
         \midrule
             5
@@ -170,10 +170,10 @@
         &
             p, a, i, n, t, e, r, g, in, int, pa, paint
         &
-        \textbf{pr: 8} \newline
-        rint: 8 \newline
+        \textbf{(p,r): 8} \newline
+        (r,int): 8 \newline
         &
-        p, r $\to$ pr
+        (p, r) $\to$ pr
         \\
         \midrule
             6
@@ -186,9 +186,9 @@
         &
             p, a, i, n, t, e, r, g, in, int, pa, paint, pr
         &
-        \textbf{print: 8} \newline
+        \textbf{(pr,int): 8} \newline
         &
-        pr, int $\to$ print
+        (pr, int) $\to$ print
         \\
         \midrule
             7
@@ -201,9 +201,9 @@
         &
             p, a, i, n, t, e, r, g, in, int, pa, paint, pr, print
         &
-        \textbf{ing: 5} \newline
+        \textbf{(in,g): 5} \newline
         &
-        in, g $\to$ ing
+        (in, g) $\to$ ing
         \\
         \addlinespace
         \bottomrule
