@@ -86,7 +86,6 @@
     represented differently.
 
     \clearpage
-
     \section*{Question 2}
 
     \subsection*{a}
@@ -290,7 +289,7 @@
     \end{tabbing}
     \subsection*{c}
     We keep an additional array \texttt{B} of \texttt{length + 1} elements.
-    We can construct B by replacing step 6. with steps:
+    We can construct B by replacing step 6. with the following steps:
     \begin{tabbing}
         \quad \texttt{if (A[i] - log(P((S[i + 1 ... j]))) < A[j]):} \\
         \quad\quad \texttt{A[j] = A[i] - log(P((S[i + 1 ... j])))} \\
@@ -298,7 +297,7 @@
     \end{tabbing}
     Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
     Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
-    Algorithm to get the optimal division:
+    Algorithm to get the optimal division thus is:
     \begin{tabbing}
         \quad Initialize an empty list of words $W = []$ and an index pointer $k = length$. \\
         \quad While $k > 0$: \\
