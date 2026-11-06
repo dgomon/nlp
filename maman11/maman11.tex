@@ -14,8 +14,6 @@
 \numberwithin{equation}{section}
 
 
-
-
 \title{Natural Language Processing \\ \large Maman 11}
 \author{Dmitri Gomon}
 \date{November 2026}
@@ -26,30 +24,26 @@
 
     \section*{Question 1}
     \subsection*{a}
-    \begin{verbatim}
-    s1: <U+0063, U+0061, U+0066, U+00E9>
-    s2: <U+0063, U+0061, U+0065, U+0066, U+0301>
-    len(s1) = 4
-    len(s2) = 5
-
+    s1: \verb|<U+0063, U+0061, U+0066, U+00E9>| \\
+    s2: \verb|<U+0063, U+0061, U+0065, U+0066, U+0301>| \\
+    len(s1) = 4 \\
+    len(s2) = 5 \\
+    \\
     Explanation:
     Python's len() on strings returns the number of Unicode code points.
-    In s1, 'é' is represented as a single precomposed code point (U+00E9),
+    In s1, \verb|'é'| is represented as a single precomposed code point (U+00E9),
     whereas in s2, the accent is a separate combining code point (U+0301)
-    following 'e' (U+0065), resulting in 5 code points.
-    \end{verbatim}
+    following \verb|'e'| (U+0065), resulting in 5 code points.
 
     \subsection*{b}
-    \begin{verbatim}
-    s1: 'c', 'a', 'f' are regular ASCII characters, require 1 byte per char, for a total 3 bytes.
-    'é' corresponds to unicode point U+00E9, which falls in range U+0080 - U+07FF, requiring 2
-    bytes in total.
-    Overall: 3 + 2 = 5 bytes.
-
-    s2: 'c', 'a', 'f', 'e' are regular ASCII characters, require 1 byte per char, for a total of
-    4 bytes. Character U+0301 falls in range U+0080 - U+07FF, thus requiring 2 bytes.
-    Overall: 4 + 2 = 6 bytes.
-    \end{verbatim}
+    s1: \verb|'c', 'a', 'f'| are regular ASCII characters, require 1 byte per char, for a total 3 bytes.
+    \verb|'é'| corresponds to unicode point U+00E9, which falls in range U+0080 - U+07FF, requiring 2
+    bytes in total. \\
+    Overall: 3 + 2 = 5 bytes.\\
+    \\
+    s2: \verb|'c', 'a', 'f', 'e'| are regular ASCII characters, require 1 byte per char, for a total of
+    4 bytes. Character U+0301 falls in range U+0080 - U+07FF, thus requiring 2 bytes. \\
+    Overall: 4 + 2 = 6 bytes.\\
 
     \subsection*{c}
     Unicode normalization converts equivalent strings into a consistent form such that visually identical text will behave
@@ -66,32 +60,29 @@
 
 
     \subsection*{d}
-
     Since s1 and s2 unicode points sequences differ, character-based tokenizer will generate different token
     sequences as well, each token sequence corresponding to the appropriate unicode sequence. \\
 
-    Byte encoding of s1 is 63 61 66 C3 A9 \\
+    Byte encodings are: \\
+    s1: 63 61 66 C3 A9 \\
+    s2: 63 61 66 65 CC 81\\
 
-    Byte encoding  of s2 is 63 61 66 65 CC 81\\
-
-    s1 might merge into a single token for "café" or subwords containing é, whereas s2
-    will likely merge "cafe" as a base word and leave the combining
+    s1 might merge into a single token for \verb|"café"| or subwords containing \verb|é|, whereas s2
+    will likely merge \verb|"cafe"| as a base word and leave the combining
     accent bytes (CC 81) as separate tokens, thus supporting parsing accented
-    letters other than 'é' in test sets.
+    letters other than \verb|'é'| in test sets.
 
 
     \subsection*{e}
-
     Unicode normalization guarantees that strings that render the same on the screen will
     also be encoded into identical sequences of bytes and thus tokenized uniformly.
     If the text does not get normalized, then strings that render identically may
     result in different tokens.
 
-
-    However, normalization changes the original code-point sequence. If a system relies on exact code
-    points, it can affect matching, tokenization, or offsets used to locate
-    characters in the original text. In addition, applying NFC to one string and
-    NFD to another without a consistent policy can leave equivalent strings
+    However, normalization changes the original code-point sequence.
+    If a system relies on exact code points, it can affect matching, tokenization, or offsets used to locate
+    characters in the original text.
+    In addition, applying NFC to one string and NFD to another without a consistent policy can leave equivalent strings
     represented differently.
 
     \clearpage
