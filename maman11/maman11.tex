@@ -323,13 +323,13 @@
 
     \subsection*{d}
     \subsubsection*{Time Complexity}
-    Outer loop index $i$ in Step 5. runs for n iterations.
-    Inner loop index $j$ in Step 7. runs for $i$ iterations, making it total of $\sum_{i = 1}^{n}\sum_{j = 1}^{i} \frac{n(n+1)}{2}$ iterations.
-    Since it's given that complexity of lookup (step 8) is $O(1)$ and also assuming the complexity of assignment, lookup and
-    log calculation operations in step 6, to be $O(1)$ as well, we obtain that the overall algorithm time complexity is $O(n^2)$.
+    Outer loop (index $i$) in Step 5. runs for n iterations.
+    Inner loop (index $j$) in Step 7. runs for $i$ iterations, for a total of $\sum_{i = 1}^{n}\sum_{j = 1}^{i} \frac{n(n+1)}{2}$ iterations.
+    Since it's given that complexity of lookup (step 8) is $O(1)$ and also assuming the complexity of assignment and
+    log calculation operations in step 9, to be $O(1)$ as well, we obtain that the overall algorithm time complexity is $O(n^2)$.
 
     \subsubsection*{Space Complexity}
-    Length of array A is $length$, and only $O(1)$ additional space gets allocated, thus space complexity is $\Theta(n)$
+    Length of both $A$ and $B$ is $length$, and only $O(1)$ additional space gets allocated, thus space complexity is $\Theta(n)$
 
     \subsection*{e}
     Both inner and outer loops contain $L$ iterations, and given $L \ll n$, we assume exists constant $C$ such that $L < C$,
