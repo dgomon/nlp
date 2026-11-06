@@ -211,7 +211,31 @@
       \label{tab:bpe-iterations}
     \end{table}
 
-    \subsection*{b}
+
+        \subsection*{b}
+
+
+    \noindent
+    $\begin{alignedat}{2}
+    \text{printer} &\colon & &(p, r, i, n, t, e, r) \\
+    & \xrightarrow{\#1} & &(p, r, in, t, e, r) \\
+    & \xrightarrow{\#2} & &(p, r, int, e, r) \\
+    & \xrightarrow{\#5} & &(pr, int, e, r) \\
+    & \xrightarrow{\#6} & &(print, e, r) \\[0.8em]
+    %
+    \text{painting} &\colon & &(p, a, i, n, t, i, n, g) \\
+    & \xrightarrow{\#1} & &(p, a, in, t, in, g) \\
+    & \xrightarrow{\#2} & &(p, a, int, in, g) \\
+    & \xrightarrow{\#3} & &(pa, int, in, g) \\
+    & \xrightarrow{\#4} & &(paint, in, g) \\
+    & \xrightarrow{\#7} & &(paint, ing) \\[0.8em]
+    %
+    \text{painter} &\colon & &(p, a, i, n, t, e, r) \\
+    & \xrightarrow{\#1} & &(p, a, in, t, e, r) \\
+    & \xrightarrow{\#2} & &(p, a, int, e, r) \\
+    & \xrightarrow{\#3} & &(pa, int, e, r) \\
+    & \xrightarrow{\#4} & &(paint, e, r)
+    \end{alignedat}$
 
 
 %    \section*{Question 3}
