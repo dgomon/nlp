@@ -308,17 +308,16 @@
     \textbf{function} \textsc{Get-Optimal-Division}(string $S$, indices $B$) \textbf{returns} division W
     \begin{tabbing}
         \quad \# \textit{Initialization} \\
-        1. \quad $length \leftarrow \textsc{Length}(S)$ \\
-        2. \quad Create an empty words vector $W = []$ \\
-        3. \quad Create an index pointer $k = length$. \\
+        1. \quad $W \leftarrow []$ \textit{\# Create an empty words vector } \\
+        2. \quad $k \leftarrow length$ \textit {\# Create an index pointer}  \\
         \\
-        4. \quad While $k > 0$: \\
-        5. \quad\quad Let $start \leftarrow B[k]$. \\
-        6. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
-        7. \quad\quad Update $k \leftarrow start - 1$. \\
+        3. \quad While $k > 0$: \\
+        4. \quad\quad Let $start \leftarrow B[k]$. \\
+        5. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
+        6. \quad\quad Update $k \leftarrow start - 1$. \\
         \\
         \quad \# \textit{Termination} \\
-        8. \quad \textbf{Return} $W$
+        7. \quad \textbf{Return} $W$
     \end{tabbing}
 
     \subsection*{d}
