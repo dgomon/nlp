@@ -318,12 +318,16 @@
 
     \subsection*{d}
     \subsubsection*{Time Complexity}
-    Outer loop has length n in Step 1 has length n. Inner loop (step 4) also has length n.
-    Since it's given that complexity of lookup (step 5) is O(1) and also assuming O(1) complexity of assignment, lookup and
-    log calculation operations in step 6, we obtain that the overall algorithm complexity is $O(n^2)$.
+    Outer loop in Step 5. runs for n iterations.
+    Inner loop in Step 7. also runs for n iterations.
+    Since it's given that complexity of lookup (step 8) is O(1) and also assuming the complexity of assignment, lookup and
+    log calculation operations in step 6, to be O(1) as well, we obtain that the overall algorithm time complexity is $O(n^2)$.
 
     \subsubsection*{Space Complexity}
-    Length of array A is $length$, thus space complexity is $\Theta(n)$
+    Length of array A is $length$, and only $O(1)$ additional space gets allocated, thus space complexity is $\Theta(n)$
+
+    \subsection*{d}
+
 
 
 %    \section*{Question 5}
