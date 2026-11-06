@@ -267,50 +267,53 @@
     \subsection*{b}
     \begin{tabbing}
     \\
-    \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
-    \quad $length \leftarrow \textsc{Length}(S)$ \\
-    \quad \textit{$\# A[j]$ - minimum cost of segmenting the prefix of length $j$} \\
-    \quad Create a cost vector $A[length + 1]$ \\
-    \\
+    \textbf{function} \textsc{Min-Cost}(string $S$, vocabulary $V$) \textbf{returns} \textit{min-cost} \\
     \quad \# \textit{Initialization} \\
-    \quad $A[0] = 0$ \\
-    \quad $A[1 .. length] = \infty$ \\
+    1. \quad $length \leftarrow \textsc{Length}(S)$ \\
+    2. \quad Create a cost vector $A[length + 1]$ \\
+       \quad\quad \textit{$\# A[j]$ contains minimum cost of segmenting the prefix of length $j$} \\
+    3. \quad $A[0] = 0$ \\
+    4. \quad $A[1 .. length] = \infty$ \\
     \\
-    1. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
-    2. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
+    5. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
+    6. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
        \quad\quad\quad \# \textit{$i$-th letter is reachable from the beginning of the word} \\
-    3. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
-    4. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
+    7. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
+    8. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
        \quad\quad\quad\quad\quad \# \textit{Choose the cheaper path among the two} \\
-    5. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
+    9. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
     \\
     \\
     \quad \# \textit{Termination} \\
-    6. \quad \textbf{return} $A[length]$
+    10. \quad \textbf{return} $A[length]$
     \end{tabbing}
     \subsection*{c}
     We keep an additional array \texttt{B} of \texttt{length + 1} elements.
-    We can construct B by replacing step 5. with the following steps:
+    We can construct B by replacing step 9. with the following steps:
     \begin{tabbing}
-        5.1 \quad \textbf{if} $(A[i] - \log(P((S[i + 1 \dots j]))) < A[j])$: \\
+        9.1 \quad \textbf{if} $(A[i] - \log(P((S[i + 1 \dots j]))) < A[j])$: \\
         \quad\quad\quad\quad \# \textit{Keep the minimal cost} \\
-        5.2 \quad\quad $A[j] = A[i] - \log(P((S[i + 1 \dots j])))$ \\
+        9.2 \quad\quad $A[j] = A[i] - \log(P((S[i + 1 \dots j])))$ \\
         \quad\quad\quad\quad \# \textit{Save starting index of the word ending at index }j \\
-        5.3 \quad\quad $B[j] = i + 1$
+        9.3 \quad\quad $B[j] = i + 1$
     \end{tabbing}
     Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
     Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
-    Algorithm to get the optimal division thus is:
+    Algorithm to get the optimal division thus is:\\
+    \\
+    \textbf{function} \textsc{Get-Optimal-Division}(string $S$, indices $B$) \textbf{returns} division W
     \begin{tabbing}
         \quad \# \textit{Initialization} \\
-        1. \quad Initialize an empty list of words $W = []$ and an index pointer $k = length$. \\
+        1. \quad $length \leftarrow \textsc{Length}(S)$ \\
+        2. \quad Create an empty words words vector $W = []$ \\
+        3. \quad Create an index pointer $k = length$. \\
         \\
-        2. \quad While $k > 0$: \\
-        3. \quad\quad Let $start = B[k]$. \\
-        4. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
-        5. \quad\quad Update $k = start - 1$. \\
+        4. \quad While $k > 0$: \\
+        5. \quad\quad Let $start = B[k]$. \\
+        6. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
+        7. \quad\quad Update $k = start - 1$. \\
         \quad \# \textit{Termination} \\
-        6. \quad Return $W$
+        8. \quad Return $W$
     \end{tabbing}
 
     \subsection*{d}
