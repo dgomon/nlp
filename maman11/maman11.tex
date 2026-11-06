@@ -24,65 +24,77 @@
 
     \maketitle
 
-%    \section*{Question 1}
-%    \subsection*{a}
-%    s1 = "café": 'c' - U+0063, 'a' - U+0061, 'f' - U+0066, 'é' - U+00E9 \\
-%    \verb|s2 = "cafe\u0301"|: 'c' - U+0063, 'a' - U+0061, 'f' - U+0066, 'e' - U+0065, U+0301 \\
-%    len(s1) = 4 \\
-%    len(s2) = 5
-%
-%    \subsection*{b}
-%    s1: c, a, f: regular ascii characters, 1 byte per char, total 3 bytes. \\
-%    é: unicode point U+00E9, falls in range U+0080 - U+07FF, thus requiring 2 bytes.
-%    Overall: 3 + 2 = 5 bytes. \\
-%    s1: c, a, f, e: regular ascii characters, 1 byte per char, total 4 bytes. \\
-%    U+0301: falls in range U+0080 - U+07FF, thus requiring 2 bytes.
-%    Overall: 4 + 2 = 6 bytes.
-%
-%    \subsection*{c}
-%    Unicode normalization converts equivalent strings into a consistent form such that visually identical text will behave
-%    consistently in code, search, storage, and comparison. \\
-%    Without normalization, two strings that render identically, can fail equality checks because they are stored as different code-point sequences.
-%    NFC keeps characters in composed form where possible, whereas NFD decomposes them into base characters plus combining marks.\\
-%    Both s1 and s2 visually render as café.
-%    s1 contains accented character é, which will not change after NFC normalization.
-%    However, after NFD normalization, the accented character é in s1 will be decomposed into unaccented character
-%    e plus combining acute accent U+0301.
-%    s2 contains only unnaccented characters, and thus it will not change upon NFD normalization.
-%    However, since it contains a combining acute accent U+0301, it will be combined with the preceding character e
-%    upon NFC normalization.
-%
-%
-%    \subsection*{d}
-%
-%    Since s1 and s2 unicode points sequences differ, character-based tokenizer will generate different token
-%    sequences as well, each token sequence corresponding to the appropriate unicode sequence. \\
-%
-%    Byte encoding of s1 is 63 61 66 C3 A9 \\
-%
-%    Byte encoding  of s2 is 63 61 66 65 CC 81\\
-%
-%    s1 might merge into a single token for "café" or subwords containing é, whereas s2
-%    will likely merge "cafe" as a base word and leave the combining
-%    accent bytes (CC 81) as separate tokens, thus supporting parsing accented
-%    letters other than 'é' in test sets.
-%
-%
-%    \subsection*{e}
-%
-%    Unicode normalization guarantees that strings that render the same on the screen will
-%    also be encoded into identical sequences of bytes and thus tokenized uniformly.
-%    If the text does not get normalized, then strings that render identically may
-%    result in different tokens.
-%
-%
-%    However, normalization changes the original code-point sequence. If a system relies on exact code
-%    points, it can affect matching, tokenization, or offsets used to locate
-%    characters in the original text. In addition, applying NFC to one string and
-%    NFD to another without a consistent policy can leave equivalent strings
-%    represented differently.
-%
-%    \clearpage
+    \section*{Question 1}
+    \subsection*{a}
+    \begin{verbatim}
+    s1: <U+0063, U+0061, U+0066, U+00E9>
+    s2: <U+0063, U+0061, U+0065, U+0066, U+0301>
+    len(s1) = 4
+    len(s2) = 5
+
+    Explanation:
+    Python's len() on strings returns the number of Unicode code points.
+    In s1, 'é' is represented as a single precomposed code point (U+00E9),
+    whereas in s2, the accent is a separate combining code point (U+0301)
+    following 'e' (U+0065), resulting in 5 code points.
+    \end{verbatim}
+
+    \subsection*{b}
+    \begin{verbatim}
+    s1: 'c', 'a', 'f' are regular ASCII characters, require 1 byte per char, for a total 3 bytes.
+    'é' corresponds to unicode point U+00E9, which falls in range U+0080 - U+07FF, requiring 2
+    bytes in total.
+    Overall: 3 + 2 = 5 bytes.
+
+    s2: 'c', 'a', 'f', 'e' are regular ASCII characters, require 1 byte per char, for a total of
+    4 bytes. Character U+0301 falls in range U+0080 - U+07FF, thus requiring 2 bytes.
+    Overall: 4 + 2 = 6 bytes.
+    \end{verbatim}
+
+    \subsection*{c}
+    Unicode normalization converts equivalent strings into a consistent form such that visually identical text will behave
+    consistently in code, search, storage, and comparison. \\
+    Without normalization, two strings that render identically, can fail equality checks because they are stored as different code-point sequences.
+    NFC keeps characters in composed form where possible, whereas NFD decomposes them into base characters plus combining marks.\\
+    Both s1 and s2 visually render as café.
+    s1 contains accented character é, which will not change after NFC normalization.
+    However, after NFD normalization, the accented character é in s1 will be decomposed into unaccented character
+    e plus combining acute accent U+0301.
+    s2 contains only unnaccented characters, and thus it will not change upon NFD normalization.
+    However, since it contains a combining acute accent U+0301, it will be combined with the preceding character e
+    upon NFC normalization.
+
+
+    \subsection*{d}
+
+    Since s1 and s2 unicode points sequences differ, character-based tokenizer will generate different token
+    sequences as well, each token sequence corresponding to the appropriate unicode sequence. \\
+
+    Byte encoding of s1 is 63 61 66 C3 A9 \\
+
+    Byte encoding  of s2 is 63 61 66 65 CC 81\\
+
+    s1 might merge into a single token for "café" or subwords containing é, whereas s2
+    will likely merge "cafe" as a base word and leave the combining
+    accent bytes (CC 81) as separate tokens, thus supporting parsing accented
+    letters other than 'é' in test sets.
+
+
+    \subsection*{e}
+
+    Unicode normalization guarantees that strings that render the same on the screen will
+    also be encoded into identical sequences of bytes and thus tokenized uniformly.
+    If the text does not get normalized, then strings that render identically may
+    result in different tokens.
+
+
+    However, normalization changes the original code-point sequence. If a system relies on exact code
+    points, it can affect matching, tokenization, or offsets used to locate
+    characters in the original text. In addition, applying NFC to one string and
+    NFD to another without a consistent policy can leave equivalent strings
+    represented differently.
+
+    \clearpage
 
     \section*{Question 2}
     \subsection*{a}
