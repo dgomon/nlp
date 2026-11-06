@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage[margin=0.75in]{geometry}
+
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -87,9 +89,9 @@
 
     \begin{table}[htbp]
       \centering
-      \begin{tabularx}{\textwidth}{c X X X}
+      \begin{tabularx}{\textwidth}{c X X X X}
         \toprule
-        \textbf{\#} & \textbf{Corpus} & \textbf{Vocabulary} & \textbf{Top Pairs Count} \\
+        \textbf{\#} & \textbf{Corpus} & \textbf{Vocabulary} & \textbf{Top Pairs Count} & \textbf{Merge Rule} \\
         \midrule
             1
         &
@@ -105,6 +107,8 @@
         pa: 14 \newline
         ai: 14 \newline
         nt: 22 \newline
+        &
+        i, n $\to$ in
         \\
         \midrule
             2
@@ -120,6 +124,8 @@
         \textbf{int: 22} \newline
         pa: 14 \newline
         ain: 14 \newline
+        &
+        in, t $\to$ int
         \\
         \midrule
             3
@@ -134,6 +140,8 @@
         &
         \textbf{pa: 14} \newline
         aint: 14 \newline
+        &
+        p, a $\to$ pa
         \\
         \midrule
             4
@@ -148,6 +156,8 @@
         &
         \textbf{paint: 14} \newline
         rint: 8 \newline
+        &
+        pa, int $\to$ paint
         \\
         \midrule
             5
@@ -162,6 +172,8 @@
         &
         \textbf{pr: 8} \newline
         rint: 8 \newline
+        &
+        p, r $\to$ pr
         \\
         \midrule
             6
@@ -175,6 +187,8 @@
             p, a, i, n, t, e, r, g, in, int, pa, paint, pr
         &
         \textbf{print: 8} \newline
+        &
+        pr, int $\to$ print
         \\
         \midrule
             7
@@ -188,12 +202,15 @@
             p, a, i, n, t, e, r, g, in, int, pa, paint, pr, print
         &
         \textbf{ing: 5} \newline
+        &
+        in, g $\to$ ing
         \\
         \addlinespace
         \bottomrule
       \end{tabularx}
-      \label{tab:unicode-norm}
+      \label{tab:bpe-iterations}
     \end{table}
+
     \subsection*{b}
 
 
