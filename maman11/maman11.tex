@@ -272,8 +272,8 @@
     1. \quad $length \leftarrow \textsc{Length}(S)$ \\
     2. \quad Create a cost vector $A[length + 1]$ \\
        \quad\quad \textit{$\# A[j]$ contains minimum cost of segmenting the prefix of length $j$} \\
-    3. \quad $A[0] = 0$ \\
-    4. \quad $A[1 .. length] = \infty$ \\
+    3. \quad $A[0] \leftarrow 0$ \\
+    4. \quad $A[1 .. length] \leftarrow \infty$ \\
     \\
     5. \quad \textbf{for} each starting word index $i$ \textbf{from} 1 \textbf{to} $length$ \textbf{do} \\
     6. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
@@ -281,7 +281,7 @@
     7. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
     8. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
        \quad\quad\quad\quad\quad \# \textit{Choose the cheaper path among the two} \\
-    9. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$ \\
+    9. \quad\quad\quad\quad\quad $A[j] \leftarrow \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$ \\
     10. \quad\quad \textbf{end if} \\
     11. \quad \textbf{end if}
     \\
@@ -296,9 +296,9 @@
     \begin{tabbing}
         9.1 \quad \textbf{if} $(A[i] - \log(P((S[i + 1 \dots j]))) < A[j])$: \\
         \quad\quad\quad\quad \# \textit{Keep the minimal cost} \\
-        9.2 \quad\quad $A[j] = A[i] - \log(P((S[i + 1 \dots j])))$ \\
+        9.2 \quad\quad $A[j] \leftarrow A[i] - \log(P((S[i + 1 \dots j])))$ \\
         \quad\quad\quad\quad \# \textit{Save starting index of the word ending at index }j \\
-        9.3 \quad\quad $B[j] = i + 1$ \\
+        9.3 \quad\quad $B[j] \leftarrow i + 1$ \\
         9.4 \quad \textbf{end if}
     \end{tabbing}
     Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
@@ -313,9 +313,9 @@
         3. \quad Create an index pointer $k = length$. \\
         \\
         4. \quad While $k > 0$: \\
-        5. \quad\quad Let $start = B[k]$. \\
+        5. \quad\quad Let $start \leftarrow B[k]$. \\
         6. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
-        7. \quad\quad Update $k = start - 1$. \\
+        7. \quad\quad Update $k \leftarrow start - 1$. \\
         \\
         \quad \# \textit{Termination} \\
         8. \quad \textbf{Return} $W$
