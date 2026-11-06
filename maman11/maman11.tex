@@ -241,10 +241,12 @@
     \section*{Question 3}
     The overall expression is:
     \begin{verbatim}
-        ^(([a-zA-Z\d])(((?!(\.\.))[a-zA-Z\d._-])*([a-zA-Z\d]))*)
+        ^([a-zA-Z\d](((?!(\.\.))[a-zA-Z\d._-])*([a-zA-Z\d]))*)
         @(([a-zA-Z\d](([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+([a-zA-Z]{2,}))$
     \end{verbatim}
-    Explanation: \\
+    Note:\\
+    While \verb|(?!(\.\.))| ensures no consecutive dots in the local part, it also forces no consecutive dots in the domain, but that rule is also implicit in the domain, as empty domain parts are disallowed.
+
 
     \section*{Question 4}
     \subsection*{a}
@@ -314,17 +316,17 @@
 
     \subsubsection*{Space Complexity}
     Length of array A is $length$, thus space complexity is $\Theta(n)$
-%
-%
-%    \section*{Question 5}
-%    TODO
+
+
+    \section*{Question 5}
+    TODO
 
 
 
 
-%    \section*{Disclosure TODO}
-%    I used ChatGPT to assist with clarifying concepts and with preliminary phrasing.
-%    All final reasoning and solutions are my own.
+    \section*{Disclosure TODO}
+    I used ChatGPT to assist with clarifying concepts and with preliminary phrasing.
+    All final reasoning and solutions are my own.
 
 
 \end{document}
