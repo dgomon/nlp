@@ -291,10 +291,10 @@
     \end{tabbing}
 
     \subsection*{c}
-    We keep an additional array \texttt{B} of \texttt{length + 1} elements.
+    We keep an additional array \texttt{B} of size $n + 1$.
     We can construct B by replacing step 9. with the following steps:
     \begin{tabbing}
-        9.1 \quad \textbf{if} $(A[i] - \log(P((S[i + 1 \dots j]))) < A[j])$: \\
+        9.1 \quad \textbf{if} $S[i+1 \dots j] \in V$ and $(A[i] - \log(P((S[i + 1 \dots j]))) < A[j])$: \\
         \quad\quad\quad\quad \# \textit{Keep the minimal cost} \\
         9.2 \quad\quad $A[j] \leftarrow A[i] - \log(P((S[i + 1 \dots j])))$ \\
         \quad\quad\quad\quad \# \textit{Save starting index of the word ending at index }j \\
@@ -309,7 +309,7 @@
     \begin{tabbing}
         \quad \# \textit{Initialization} \\
         1. \quad $length \leftarrow \textsc{Length}(S)$ \\
-        2. \quad Create an empty words words vector $W = []$ \\
+        2. \quad Create an empty words vector $W = []$ \\
         3. \quad Create an index pointer $k = length$. \\
         \\
         4. \quad While $k > 0$: \\
@@ -323,10 +323,10 @@
 
     \subsection*{d}
     \subsubsection*{Time Complexity}
-    Outer loop in Step 5. runs for n iterations.
-    Inner loop in Step 7. also runs for n iterations.
-    Since it's given that complexity of lookup (step 8) is O(1) and also assuming the complexity of assignment, lookup and
-    log calculation operations in step 6, to be O(1) as well, we obtain that the overall algorithm time complexity is $O(n^2)$.
+    Outer loop index $i$ in Step 5. runs for n iterations.
+    Inner loop index $j$ in Step 7. runs for $i$ iterations, making it total of $\sum_{i = 1}^{n}\sum_{j = 1}^{i} \frac{n(n+1)}{2}$ iterations.
+    Since it's given that complexity of lookup (step 8) is $O(1)$ and also assuming the complexity of assignment, lookup and
+    log calculation operations in step 6, to be $O(1)$ as well, we obtain that the overall algorithm time complexity is $O(n^2)$.
 
     \subsubsection*{Space Complexity}
     Length of array A is $length$, and only $O(1)$ additional space gets allocated, thus space complexity is $\Theta(n)$
