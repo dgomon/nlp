@@ -275,14 +275,14 @@
     3. \quad $A[0] \leftarrow 0$ \\
     4. \quad $A[1 .. length] \leftarrow \infty$ \\
     \\
-    5. \quad \textbf{for} each starting word index $i$ \textbf{from} 1 \textbf{to} $length$ \textbf{do} \\
+    5. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
     6. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
        \quad\quad\quad \# \textit{$i$-th letter is reachable from the beginning of the word} \\
     7. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
     8. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
        \quad\quad\quad\quad\quad \# \textit{Choose the cheaper path among the two} \\
     9. \quad\quad\quad\quad\quad $A[j] \leftarrow \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$ \\
-    10. \quad\quad \textbf{end if} \\
+    10. \quad\quad\quad\textbf{end if} \\
     11. \quad \textbf{end if}
     \\
     \\
