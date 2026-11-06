@@ -275,18 +275,21 @@
     3. \quad $A[0] = 0$ \\
     4. \quad $A[1 .. length] = \infty$ \\
     \\
-    5. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
+    5. \quad \textbf{for} each starting word index $i$ \textbf{from} 1 \textbf{to} $length$ \textbf{do} \\
     6. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
        \quad\quad\quad \# \textit{$i$-th letter is reachable from the beginning of the word} \\
     7. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
     8. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
        \quad\quad\quad\quad\quad \# \textit{Choose the cheaper path among the two} \\
-    9. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
+    9. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$ \\
+    10. \quad\quad \textbf{end if} \\
+    11. \quad \textbf{end if}
     \\
     \\
     \quad \# \textit{Termination} \\
-    10. \quad \textbf{return} $A[length]$
+    12. \quad \textbf{return} $A[length]$
     \end{tabbing}
+
     \subsection*{c}
     We keep an additional array \texttt{B} of \texttt{length + 1} elements.
     We can construct B by replacing step 9. with the following steps:
@@ -295,7 +298,8 @@
         \quad\quad\quad\quad \# \textit{Keep the minimal cost} \\
         9.2 \quad\quad $A[j] = A[i] - \log(P((S[i + 1 \dots j])))$ \\
         \quad\quad\quad\quad \# \textit{Save starting index of the word ending at index }j \\
-        9.3 \quad\quad $B[j] = i + 1$
+        9.3 \quad\quad $B[j] = i + 1$ \\
+        9.4 \quad \textbf{end if}
     \end{tabbing}
     Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
     Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
@@ -312,8 +316,9 @@
         5. \quad\quad Let $start = B[k]$. \\
         6. \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
         7. \quad\quad Update $k = start - 1$. \\
+        \\
         \quad \# \textit{Termination} \\
-        8. \quad Return $W$
+        8. \quad \textbf{Return} $W$
     \end{tabbing}
 
     \subsection*{d}
@@ -331,10 +336,8 @@
     thus reducing runtime time complexity to $O(1)$.
 
 
-
 %    \section*{Question 5}
 %    TODO
-
 
 
 
