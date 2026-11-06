@@ -89,9 +89,105 @@
       \centering
       \begin{tabularx}{\textwidth}{c X X X}
         \toprule
-        \textbf{\#} & \textbf{Corpus} & \textbf{Vocabulary} & \textbf{Pairs and Counts} \\
+        \textbf{\#} & \textbf{Corpus} & \textbf{Vocabulary} & \textbf{Top Pairs Count} \\
         \midrule
             1
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            2
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            3
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            4
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            5
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            6
+        &
+            7 p a i n t \newline
+            4 p a i n t e r \newline
+            3 p a i n t i n g \newline
+            6 p r i n t \newline
+            2 p r i n t i n g
+        &
+            p a i n t e r i n g
+        &
+        pa: 14 \newline
+        ai: 14 \newline
+        in: 27 \newline
+        nt: 22 \newline
+        \\
+        \midrule
+            7
         &
             7 p a i n t \newline
             4 p a i n t e r \newline
@@ -114,81 +210,81 @@
     \subsection*{b}
 
 
-    \section*{Question 3}
-    TODO
-
-    \section*{Question 4}
-    \subsection*{a}
-    Defining the cost of choosing a word $w_i$ as $c(w_i) =
-        -\log P(w_i) = \log \frac{1}{P(w_i)}$, where $c(w_i) \ge 0$ since $0 < P(w_i) \le 1$,
-        the problem is equivalent to minimizing the total cost $\sum_{i=1}^k c(w_i)$:
-    \begin{align*}
-        \argmax_{w_1, \dots, w_k} \prod_{i=1}^k P(w_i)
-        &= \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
-            && \text{($a > b \iff \log a > \log b$)} \\
-        &= \argmax_{w_1, \dots, w_k} \sum_{i=1}^k \log P(w_i)
-            && (\log(ab) = \log(a) + \log(b)) \\
-        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
-        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
-            && (-\log(a) = \log(\frac{1}{a})) \\
-        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k c(w_i)
-    \end{align*}
-
-    \subsection*{b}
-    \begin{tabbing}
-    \\
-    \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
-    \quad $length \leftarrow \textsc{Length}(S)$ \\
-    \quad Create a cost vector $A[length + 1]$ \\
-    \quad \textit{$A[j]$ - minimum cost of segmenting the prefix of length $j$} \\
-    \\
-    \quad \# \textit{Initialization} \\
-    \quad $A[0] = 0$ \\
-    \quad $A[1 .. length] = \infty$ \\
-    \\
-    1. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
-    2. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
-    3. \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
-    4. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
-    5. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
-    6. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
-    \\
-    \\
-    \quad \# \textit{Termination} \\
-    \quad \textbf{return} $A[length]$
-    \end{tabbing}
-    \subsection*{c}
-    We keep an additional array \texttt{B} of \texttt{length + 1} elements.
-    We can construct B by replacing step 6. with steps:
-    \begin{tabbing}
-        \quad \texttt{if (A[i] - log(P((S[i + 1 ... j]))) < A[j]):} \\
-        \quad\quad \texttt{A[j] = A[i] - log(P((S[i + 1 ... j])))} \\
-        \quad\quad \texttt{B[j] = i + 1}
-    \end{tabbing}
-    Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
-    Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
-    Algorithm to get the optimal division:
-    \begin{tabbing}
-        \quad Initialize an empty list of words $W = []$ and an index pointer $k = length$. \\
-        \quad While $k > 0$: \\
-        \quad\quad Let $start = B[k]$. \\
-        \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
-        \quad\quad Update $k = start - 1$. \\
-        \quad Return $W$ (reversed if appended).
-    \end{tabbing}
-
-    \subsection*{d}
-    \subsubsection*{Time Complexity}
-    Outer loop has length n in Step 1 has length n. Inner loop (step 4) also has length n.
-    Since it's given that complexity of lookup (step 5) is O(1) and also assuming O(1) complexity of assignment, lookup and
-    log calculation operations in step 6, we obtain that the overall algorithm complexity is $O(n^2)$.
-
-    \subsubsection*{Space Complexity}
-    Length of array A is $length$, thus space complexity is $\Theta(n)$
-
-
-    \section*{Question 5}
-    TODO
+%    \section*{Question 3}
+%    TODO
+%
+%    \section*{Question 4}
+%    \subsection*{a}
+%    Defining the cost of choosing a word $w_i$ as $c(w_i) =
+%        -\log P(w_i) = \log \frac{1}{P(w_i)}$, where $c(w_i) \ge 0$ since $0 < P(w_i) \le 1$,
+%        the problem is equivalent to minimizing the total cost $\sum_{i=1}^k c(w_i)$:
+%    \begin{align*}
+%        \argmax_{w_1, \dots, w_k} \prod_{i=1}^k P(w_i)
+%        &= \argmax_{w_1, \dots, w_k} (\log \prod_{i = 1}^{k}P(w_i))
+%            && \text{($a > b \iff \log a > \log b$)} \\
+%        &= \argmax_{w_1, \dots, w_k} \sum_{i=1}^k \log P(w_i)
+%            && (\log(ab) = \log(a) + \log(b)) \\
+%        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k -\log P(w_i) \\
+%        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k \log \frac{1}{P(w_i)}
+%            && (-\log(a) = \log(\frac{1}{a})) \\
+%        &= \argmin_{w_1, \dots, w_k} \sum_{i=1}^k c(w_i)
+%    \end{align*}
+%
+%    \subsection*{b}
+%    \begin{tabbing}
+%    \\
+%    \textbf{function} \textsc{Min-Cost}($S, V$) \textbf{returns} \textit{min-cost} \\
+%    \quad $length \leftarrow \textsc{Length}(S)$ \\
+%    \quad Create a cost vector $A[length + 1]$ \\
+%    \quad \textit{$A[j]$ - minimum cost of segmenting the prefix of length $j$} \\
+%    \\
+%    \quad \# \textit{Initialization} \\
+%    \quad $A[0] = 0$ \\
+%    \quad $A[1 .. length] = \infty$ \\
+%    \\
+%    1. \quad \textbf{for} each starting word index $i$ \textbf{from} 0 \textbf{to} $length - 1$ \textbf{do} \\
+%    2. \quad\quad \textbf{if} $A[i] \neq \infty$ \\
+%    3. \quad\quad\quad \# \textit{letter $i$ is reachable from beginning of the word} \\
+%    4. \quad\quad\quad \textbf{for} each ending word index $j$ \textbf{from} i + 1 \textbf{to} $length$ \textbf{do} \\
+%    5. \quad\quad\quad\quad \textbf{if} $S[i + 1 \dots j] \in V$ \\
+%    6. \quad\quad\quad\quad\quad $A[j] = \min(A[j], A[i] - \log(P(S[i + 1 \dots j])))$
+%    \\
+%    \\
+%    \quad \# \textit{Termination} \\
+%    \quad \textbf{return} $A[length]$
+%    \end{tabbing}
+%    \subsection*{c}
+%    We keep an additional array \texttt{B} of \texttt{length + 1} elements.
+%    We can construct B by replacing step 6. with steps:
+%    \begin{tabbing}
+%        \quad \texttt{if (A[i] - log(P((S[i + 1 ... j]))) < A[j]):} \\
+%        \quad\quad \texttt{A[j] = A[i] - log(P((S[i + 1 ... j])))} \\
+%        \quad\quad \texttt{B[j] = i + 1}
+%    \end{tabbing}
+%    Once B has been constructed, starting from j = length, B[j] will contain the start index of the word that ends in index j.
+%    Backtracking from the last word, we thus can collect all the sub-words that minimize the cost.
+%    Algorithm to get the optimal division:
+%    \begin{tabbing}
+%        \quad Initialize an empty list of words $W = []$ and an index pointer $k = length$. \\
+%        \quad While $k > 0$: \\
+%        \quad\quad Let $start = B[k]$. \\
+%        \quad\quad Prepend the substring $S[start \dots k]$ to $W$. \\
+%        \quad\quad Update $k = start - 1$. \\
+%        \quad Return $W$ (reversed if appended).
+%    \end{tabbing}
+%
+%    \subsection*{d}
+%    \subsubsection*{Time Complexity}
+%    Outer loop has length n in Step 1 has length n. Inner loop (step 4) also has length n.
+%    Since it's given that complexity of lookup (step 5) is O(1) and also assuming O(1) complexity of assignment, lookup and
+%    log calculation operations in step 6, we obtain that the overall algorithm complexity is $O(n^2)$.
+%
+%    \subsubsection*{Space Complexity}
+%    Length of array A is $length$, thus space complexity is $\Theta(n)$
+%
+%
+%    \section*{Question 5}
+%    TODO
 
 
 
