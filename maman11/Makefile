@@ -20,7 +20,11 @@ merge: latex quarto notebook
 	merger.write('merged.pdf'); \
 	merger.close()"
 
+zip: merge
+	zip maman11.zip BPETokenizer.ipynb ./merged.pdf
+
 clean:
 	jupyter nbconvert --clear-output --inplace BPETokenizer.ipynb
 	rm -f merged.pdf BPETokenizer.pdf maman11.pdf
 	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.synctex.gz
+	rm *.zip
