@@ -21,5 +21,6 @@ merge: latex quarto notebook
 	merger.close()"
 
 clean:
-	rm -f merged.pdf BPETokenizer.pdf maman11.pdf ../out/maman11.pdf
+	jupyter nbconvert --clear-output --inplace BPETokenizer.ipynb
+	rm -f merged.pdf BPETokenizer.pdf maman11.pdf
 	rm -f *.aux *.log *.out *.toc *.fls *.fdb_latexmk *.synctex.gz
