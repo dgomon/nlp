@@ -1,6 +1,9 @@
 fontsize: 9pt
 format:
   pdf:
+    include-in-header:
+      text: |
+        \usepackage{nopageno}
     title-block-style: none
     papersize: a4
     geometry:
