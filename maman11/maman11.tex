@@ -332,14 +332,10 @@
     Length of both $A$ and $B$ is $length$, and only $O(1)$ additional space gets allocated, thus space complexity is $\Theta(n)$
 
     \subsection*{e}
-    The outer loop in step 5. still runs for $n$ iterations.
-    However, since length of each word in $V$ doesn't exceed $L$, we can limit the inner loop index $j$ in step 7. to run
-    for $i + 1$ to $\min(i + 1 + L, length)$, or at most $L$ iterations.\\
-    Thus the new time complexity becomes $O(n \cdot L)$, or $O(n)$, since $L \ll n$.
+    Since the length of each word in $V$ cannot exceed $L$, no substring of $S$ belonging to $V$ can exceed $L$.
+    Accordingly, we now limit the inner loop in step 7. to run for at most $L$ iterations, from $i + 1$ to $\min(i + L, length)$.
 
-
-%    \section*{Question 5}
-%    TODO
+    The outer loop in step 5. still runs for $n$ iterations and the new time complexity becomes $O(n \cdot L)$, or $O(n)$, since $L \ll n$.
 
 
     \subsection*{AI Assistance Disclaimer}
