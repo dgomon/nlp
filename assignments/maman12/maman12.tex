@@ -25,7 +25,16 @@
 
     \section*{Question 1}
     \subsection*{a}
-    TODO
+    Each $(n - 1)$-gram model can be considered as a special case of an $n$-gram model in which the conditional probabilities ignore the oldest token in the context:
+    \begin{align*}
+        P(w_i \mid w_{i - n + 1}, \dots, w_{i - 1}) = P(w_i \mid w_{i - n + 2}, \dots, w_{i - 1})
+    \end{align*}
+    Therefore, the set of all valid $(n-1)$-gram distributions $\Theta_{n-1}$ is a subset of all valid $n$-gram distributions $\Theta_n$ ($\Theta_{n-1} \subseteq \Theta_n$).
+
+    Because both models compute likelihood over the exact same sequence of tokens $w_1, \dots, w_{|D|}$ in $D$, Maximum Likelihood Estimation (MLE) chooses the distribution in each class that maximizes $P(D)$:
+    \begin{align*}
+        P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
+    \end{align*}
 
     \subsection*{b}
     TODO
