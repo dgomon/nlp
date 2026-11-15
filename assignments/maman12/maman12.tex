@@ -40,32 +40,32 @@
     TODO
 
     \subsection*{c}
-    No, the claim is incorrect. We prove by counterexample: \\
+    No, it does not follow. We prove by counterexample: \\
 
-    Define training set: \texttt{D=<s>,a,a,b,a a,</s>}, such that $N = 6$.\\
+    Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
     Unigram probabilities then are:
     \begin{align*}
         P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
         P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
-        P(</s>) = \frac{C(</s>)}{N} = \frac{1}{6}
+        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
     \end{align*}
     Bigram probabilities are:
     \begin{align*}
         P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
-        P(b \mid a) = \frac{C(ba)}{C(a)} = \frac{1}{4}, \quad
-        P(</s> \mid a) = \frac{1}{4}
+        P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
+        P(\texttt{</s>} \mid a) = \frac{1}{4}
     \end{align*}
 
-    Define test set: \texttt{T=<s>$\underbrace{a,a,\dots,a}_{\times 10}$</s>}, such that $N=11$. \\
+    Define test set: \texttt{T=<s>$\underbrace{a,a,\dots,a}_{\times 10}$</s>}, such that $N_{test}=11$. \\
     Then for unigram:
     \begin{align*}
-        PP_{1}(D) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
+        PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
             = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
-            & \approx 1.63
+            & \approx 1.70
     \end{align*}
     For bigram:
     \begin{align*}
-        PP_{2}(D) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
+        PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
             &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
             &= 2
     \end{align*}
