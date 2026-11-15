@@ -35,23 +35,25 @@
     \begin{align*}
         P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
     \end{align*}
+    \qed
 
     \subsection*{b}
     By definition of PPD:
     \begin{align*}
         PP(D) = P(w_1, \dots, w_{|D|})^{-\frac{1}{|D|}}
     \end{align*}
-    In a. we proved that $P_n(D) \geq P_{n - 1}(D)$.
-    Since $a > b \iff a^k > b^k, \forall k > 0$ we get:
+    In part (a) we proved that $P_n(D) \geq P_{n - 1}(D)$.
+    Since $a > b \iff a^k > b^k, \forall k > 0$, we get:
 
     \begin{align*}
         P_n(D)^{\frac{1}{|D|}} \geq P_{n - 1}(D)^{\frac{1}{|D|}}
     \end{align*}
-    Inversing the exponent we get
+    Taking the reciprocal, we get:
     \begin{align*}
         P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
     \end{align*}
     \qed
+    \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model. \qed
 
     \subsection*{c}
     No, it does not follow.
