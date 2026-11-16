@@ -23,76 +23,83 @@
 
     \maketitle
 
-    \section*{Question 1}
-    \subsection*{a}
-    Each $(n - 1)$-gram model can be considered as a special case of an $n$-gram model in which the conditional probabilities ignore the oldest word in the context:
-    \begin{align*}
-        P(w_i \mid w_{i - n + 1}, \dots, w_{i - 1}) = P(w_i \mid w_{i - n + 2}, \dots, w_{i - 1})
-    \end{align*}
-    Therefore, the set of all valid $(n-1)$-gram distributions $\Theta_{n-1}$ is a subset of all valid $n$-gram distributions $\Theta_n$ ($\Theta_{n-1} \subseteq \Theta_n$).
-
-    Because both models compute likelihood over the exact same sequence of tokens $w_1, \dots, w_{|D|}$ in $D$, Maximum Likelihood Estimation (MLE) chooses the distribution in each class that maximizes $P(D)$:
-    \begin{align*}
-        P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
-    \end{align*}
-    \qed
-
-    \subsection*{b}
-    By definition of PPD:
-    \begin{align*}
-        PP(D) = P(w_1, \dots, w_{|D|})^{-\frac{1}{|D|}}
-    \end{align*}
-    In part (a) we proved that $P_n(D) \geq P_{n - 1}(D)$.
-    Since $a > b \iff a^k > b^k, \forall k > 0$, we get:
-
-    \begin{align*}
-        P_n(D)^{\frac{1}{|D|}} \geq P_{n - 1}(D)^{\frac{1}{|D|}}
-    \end{align*}
-    Taking the reciprocal, we get:
-    \begin{align*}
-        P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
-    \end{align*}
-    \qed
-    \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model. \qed
-
-    \subsection*{c}
-    No, it does not follow.
-    We prove by counterexample: \\
-
-    Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
-    Unigram probabilities then are:
-    \begin{align*}
-        P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
-        P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
-        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
-    \end{align*}
-    Bigram probabilities are:
-    \begin{align*}
-        P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
-        P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
-        P(\texttt{</s>} \mid a) = \frac{1}{4}
-    \end{align*}
-
-    Define test set: \texttt{T=<s>$\underbrace{\texttt{a,a,\dots,a}}_{\times 10}$</s>}, such that $N_{test}=11$. \\
-    Then for unigram:
-    \begin{align*}
-        PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
-            = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
-            & \approx 1.70
-    \end{align*}
-    For bigram:
-    \begin{align*}
-        PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
-            &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
-            &= 2
-    \end{align*}
-
-    This counterexample demonstrates that n-gram model for $n=2$ may achieve higher perplexity than $n-1$-model over test corpus data.
+%    \section*{Question 1}
+%    \subsection*{a}
+%    Each $(n - 1)$-gram model can be considered as a special case of an $n$-gram model in which the conditional probabilities ignore the oldest word in the context:
+%    \begin{align*}
+%        P(w_i \mid w_{i - n + 1}, \dots, w_{i - 1}) = P(w_i \mid w_{i - n + 2}, \dots, w_{i - 1})
+%    \end{align*}
+%    Therefore, the set of all valid $(n-1)$-gram distributions $\Theta_{n-1}$ is a subset of all valid $n$-gram distributions $\Theta_n$ ($\Theta_{n-1} \subseteq \Theta_n$).
+%
+%    Because both models compute likelihood over the exact same sequence of tokens $w_1, \dots, w_{|D|}$ in $D$, Maximum Likelihood Estimation (MLE) chooses the distribution in each class that maximizes $P(D)$:
+%    \begin{align*}
+%        P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
+%    \end{align*}
+%    \qed
+%
+%    \subsection*{b}
+%    By definition of PPD:
+%    \begin{align*}
+%        PP(D) = P(w_1, \dots, w_{|D|})^{-\frac{1}{|D|}}
+%    \end{align*}
+%    In part (a) we proved that $P_n(D) \geq P_{n - 1}(D)$.
+%    Since $a > b \iff a^k > b^k, \forall k > 0$, we get:
+%
+%    \begin{align*}
+%        P_n(D)^{\frac{1}{|D|}} \geq P_{n - 1}(D)^{\frac{1}{|D|}}
+%    \end{align*}
+%    Taking the reciprocal, we get:
+%    \begin{align*}
+%        P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
+%    \end{align*}
+%    \qed
+%    \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model. \qed
+%
+%    \subsection*{c}
+%    No, it does not follow.
+%    We prove by counterexample: \\
+%
+%    Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
+%    Unigram probabilities then are:
+%    \begin{align*}
+%        P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
+%        P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
+%        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
+%    \end{align*}
+%    Bigram probabilities are:
+%    \begin{align*}
+%        P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
+%        P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
+%        P(\texttt{</s>} \mid a) = \frac{1}{4}
+%    \end{align*}
+%
+%    Define test set: \texttt{T=<s>$\underbrace{\texttt{a,a,\dots,a}}_{\times 10}$</s>}, such that $N_{test}=11$. \\
+%    Then for unigram:
+%    \begin{align*}
+%        PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
+%            = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
+%            & \approx 1.70
+%    \end{align*}
+%    For bigram:
+%    \begin{align*}
+%        PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
+%            &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
+%            &= 2
+%    \end{align*}
+%
+%    This counterexample demonstrates that n-gram model for $n=2$ may achieve higher perplexity than $n-1$-model over test corpus data.
 
 
     \section*{Question 2}
     \subsection*{a}
-    TODO
+    Assume $k \in {1, \dots, C}$ is the index of the true target token $w_i$:
+    \begin{align*}
+        y_j  =
+            \begin{cases}
+                1 & \text{, } j = k \\
+                0 & o.w.
+            \end{cases}
+    \end{align*}
 
     \subsection*{b}
     TODO
