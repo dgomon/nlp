@@ -9,7 +9,8 @@
 \usepackage{amstext}
 \usepackage{tabularx}
 \usepackage{booktabs}
-\usepackage{hyperref} % For professional-quality horizontal rules
+\usepackage{hyperref}
+\usepackage{bm} % For professional-quality horizontal rules
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \numberwithin{equation}{section}
@@ -18,6 +19,7 @@
 \title{Natural Language Processing \\ \large Maman 12}
 \author{Dmitri Gomon}
 \date{November 2026}
+\renewcommand{\theequation}{\arabic{equation}}
 
 \begin{document}
 
@@ -92,13 +94,27 @@
 
     \section*{Question 2}
     \subsection*{a}
-    Assume $k \in {1, \dots, C}$ is the index of the true target token $w_i$:
-    \begin{align*}
-        y_j  =
+    Assume $k \in {1, \dots, C}$ is the index of the true target token $w_i$. $\bm{y}^{(i)}$ is the one-hot vector corresponding to step $i$, therefore by definition of $\bm{y}$ we have:
+    \begin{equation}
+        y^{(i)}_j  =
             \begin{cases}
-                1 & \text{, } j = k \\
-                0 & o.w.
-            \end{cases}
+                1\text{, } &  j = k \\
+                0\text{, } & otherwise
+            \end{cases}\label{eq:eq1}
+    \end{equation}
+    $\bm{p}^{(i)}$ is the vector of probabilities assigned by the model at step $i$.
+    Since, by assumption, $k$ is the index of the true target token $w_i$, the $k$-th entry of $\bm{p}^{(i)}$ corresponds to the probability the model assigns to
+    $w_i$ given context ($w_1, \dots, w_{i-1}$):
+    \begin{equation}
+        p^{(i)}_k = P(w_i \mid w_1, \dots, w_{i-1})\label{eq:eq2}
+    \end{equation}
+
+    Using definition of cross-entropy, for step $i$ we have:
+    \begin{align*}
+        L_{CE}^{(i)}(\bm{y}^{i}, \bm{p}^{i}) &= -\sum_{j = 1}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j & \text{by definition of $L_{CE}$}  \\
+            &= -(y^{(i)}_{k}\log_{2}p^{(i)}_k + \sum_{j = 1, j \neq k}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j) & \text{isolating non-zero term} \\
+            &= -(1 \cdot \log_{2} p^{(i)}_k) & \text{substituting $\eqref{eq:eq1}$ and $\eqref{eq:eq2}$}  \\
+            &= -\log_{2} P(w_i \mid w_1, \dots, w_{i-1}) \\
     \end{align*}
 
     \subsection*{b}
