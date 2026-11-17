@@ -128,7 +128,13 @@
     \end{align*}
 
     \subsection*{c}
-    TODO
+    Using the formal definition of perplexity (page 58 in the book), we have:
+    \begin{align*}
+        \text{Perplexity}(W) &= 2^{H(W)} \\
+            &= 2^{-\frac{1}{M}\log_{2}{P(w_1, \dots, w_M)}} \\
+            &= 2^{-\log_{2}{P(w_1, \dots, w_M)^{-\frac{1}{M}}}} \\
+            &= P(w_1, \dots, w_M)^{-\frac{1}{M}}
+    \end{align*}
 
 
 %    \section*{Question 3}
