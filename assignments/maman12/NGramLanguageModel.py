@@ -64,7 +64,9 @@ if __name__ == '__main__':
 
     model.train()
 
-    # result = model.prob("alice", ("[",), smoothing='Laplace')
-    result = model.prob("alice", ("[",))
+    result = model.prob("alice", ("[",), smoothing='Laplace')
+    # result = model.prob("alice", ("[",))
+
+    print (result)
 
     pass
