@@ -18,7 +18,8 @@ class NGramLanguageModel:
         self.test_tokens: list[str] = []
 
         self.vocabulary: set[str] = set()
-        self.ngram_counts = defaultdict(Counter)
+        self.history_counts = Counter()
+        self.successor_counts = defaultdict(Counter)
 
     def prepare_data(self, text):
         self.tokens = nltk.tokenize.word_tokenize(text.lower())
@@ -37,39 +38,33 @@ class NGramLanguageModel:
 
             history = ngram[:-1]   # The history string/tuple
             next_word = ngram[-1]  # The word following the history
-            self.ngram_counts[history][next_word] += 1
-
-        # normalize into a probability table
-
-        for history, counter in self.ngram_counts.items():
-            total_count = sum(counter.values())
-            # Map each word to its Maximum Likelihood Estimation (MLE) probability
-            self.ngram_probs[history] = {word: count / total_count for word, count in counter.items()}
+            self.history_counts[history] += 1
+            self.successor_counts[history][next_word] += 1
 
 
     def prob(self, word, history, smoothing=None):
         # if history is shorter than n - 1, pad it on the left
         history = (start_symbol,) * max(0, self.history_length - len(history)) + history
 
-        # Retrieve the Counter of following words for this history
-        following_counts = self.ngram_counts.get(history)
-
-        if not following_counts:
-            # Handle unseen histories (fallback, uniform random, or backoff)
+        if self.history_counts[history] == 0:
+            # History not found
             raise ValueError(f"History {history} not found in model.")
 
-        return self.ngram_probs.get(history).get(word, 0.0)
+        if smoothing == 'Laplace':
+            return (self.successor_counts[history][word] + 1) / (self.history_counts[history] + len(self.vocabulary))
+        else:
+            return self.successor_counts[history][word] / self.history_counts[history]
 
 
 if __name__ == '__main__':
     model = NGramLanguageModel(n = 2)
-
 
     alice_raw = gutenberg.raw('carroll-alice.txt')
     model.prepare_data(alice_raw)
 
     model.train()
 
+    # result = model.prob("alice", ("[",), smoothing='Laplace')
     result = model.prob("alice", ("[",))
 
     pass
