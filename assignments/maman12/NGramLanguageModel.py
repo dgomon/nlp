@@ -48,12 +48,13 @@ class NGramLanguageModel:
 
         if self.history_counts[history] == 0:
             # History not found
-            raise ValueError(f"History {history} not found in model.")
+            return 0
 
         if smoothing == 'Laplace':
             return (self.successor_counts[history][word] + 1) / (self.history_counts[history] + len(self.vocabulary))
-        else:
-            return self.successor_counts[history][word] / self.history_counts[history]
+
+        # no smoothing
+        return self.successor_counts[history][word] / self.history_counts[history]
 
 
 if __name__ == '__main__':
