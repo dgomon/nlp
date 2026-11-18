@@ -74,15 +74,17 @@ class NGramLanguageModel:
             smoothing: None (MLE) or 'Laplace' (add-one smoothing).
         """
 
-        if self.history_counts[history] == 0:
+        history_tuple = tuple(history)
+
+        if self.history_counts[history_tuple] == 0:
             # History not found
             return 0
 
         if smoothing == 'Laplace':
-            return (self.next_word_counts[history][word] + 1) / (self.history_counts[history] + len(self.vocab))
+            return (self.next_word_counts[history_tuple][word] + 1) / (self.history_counts[history_tuple] + len(self.vocab))
 
         # no smoothing
-        return self.next_word_counts[history][word] / self.history_counts[history]
+        return self.next_word_counts[history_tuple][word] / self.history_counts[history_tuple]
 
 
     def perplexity(self, tokens: Sequence[str], smoothing=None) -> float:
@@ -108,21 +110,39 @@ def main() -> None:
     random.seed(42)  # For reproducible text-generation experiments
 
     models: dict[int, NGramLanguageModel] = {}
+    stats = []
+
     for n in (2, 3, 4):
         model = NGramLanguageModel(n)
         model.prepare_data(text)
         model.train()
-        models[n] = model
+
+        stats.append({
+            "n": n,
+            "train_tokens": len(model.train_tokens),
+            "test_tokens": len(model.test_tokens),
+            "vocab_size": len(model.vocab),
+            "ngram_count": len(model.ngram_counts),
+            "train_mle": model.perplexity(model.train_tokens, smoothing=None),
+            "test_mle": model.perplexity(model.test_tokens, smoothing=None),
+            "train_laplace": model.perplexity(model.train_tokens, smoothing='Laplace'),
+            "test_laplace": model.perplexity(model.test_tokens, smoothing='Laplace'),
+        })
+
+    header = f"{'n':<4} | {'Train (MLE)':<12} | {'Test (MLE)':<12} | {'Train (Laplace)':<15} | {'Test (Laplace)':<15}"
+    print(header)
+    print("-" * len(header))
+
+    for s in stats:
         print(
-            f"n={n}: {len(model.train_tokens)} training tokens, "
-            f"{len(model.test_tokens)} test tokens, "
-            f"{len(model.vocab)} vocabulary entries, "
-            f"{len(model.ngram_counts)} distinct n-grams"
+            f"{s['n']:<4} | "
+            f"{s['train_mle']:<12.4f} | "
+            f"{s['test_mle']:<12.4f} | "
+            f"{s['train_laplace']:<15.4f} | "
+            f"{s['test_laplace']:<15.4f}"
         )
 
-    # TODO: Report train/test perplexity for each model with:
-    #   - smoothing=None (MLE)
-    #   - smoothing='Laplace'
+    # TODO: doc: reason for infinite perplexity: word "speaker" appearing first on line 3219 (from 3600 total)
 
     # TODO: Choose a fixed, observed initial history. Generate
     # with greedy, random, and temperature sampling for one model.
