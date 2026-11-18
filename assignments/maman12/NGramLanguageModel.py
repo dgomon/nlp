@@ -60,6 +60,8 @@ class NGramLanguageModel:
         for ngram in ngrams(self.train_tokens, self.n):
             history = ngram[:-1]   # The history string/tuple
             next_word = ngram[-1]  # The word following the history
+
+            self.ngram_counts[ngram] += 1
             self.history_counts[history] += 1
             self.next_word_counts[history][next_word] += 1
 
@@ -100,18 +102,53 @@ class NGramLanguageModel:
 
         return math.exp(-log_sum / num_tokens)
 
-if __name__ == '__main__':
-    model = NGramLanguageModel(n = 2)
 
-    alice_raw = gutenberg.raw('carroll-alice.txt')
-    model.prepare_data(alice_raw)
+def main() -> None:
+    text = gutenberg.raw("carroll-alice.txt")
+    random.seed(42)  # For reproducible text-generation experiments
 
-    model.train()
+    models: dict[int, NGramLanguageModel] = {}
+    for n in (2, 3, 4):
+        model = NGramLanguageModel(n)
+        model.prepare_data(text)
+        model.train()
+        models[n] = model
+        print(
+            f"n={n}: {len(model.train_tokens)} training tokens, "
+            f"{len(model.test_tokens)} test tokens, "
+            f"{len(model.vocab)} vocabulary entries, "
+            f"{len(model.ngram_counts)} distinct n-grams"
+        )
 
-    result = model.prob("alice", ("[",), smoothing='Laplace')
+    # TODO: Report train/test perplexity for each model with:
+    #   - smoothing=None (MLE)
+    #   - smoothing='Laplace'
 
-    print (result)
+    # TODO: Choose a fixed, observed initial history. Generate
+    # with greedy, random, and temperature sampling for one model.
+    # Compare repetitiveness, diversity, and coherence.
 
-    perplexity = model.perplexity(("tired", "of", "sitting"))
+    # TODO: Choose one sampling strategy and compare n = 2,3,4.
+    # Use the same initial text, choosing its last n-1 tokens for each model.
+    # Explain how model order affects the generated text.
 
-    pass
+
+
+# def main() -> None:
+#     model = NGramLanguageModel(n = 2)
+#
+#     alice_raw = gutenberg.raw('carroll-alice.txt')
+#     model.prepare_data(alice_raw)
+#
+#     model.train()
+#
+#     result = model.prob("alice", ("[",), smoothing='Laplace')
+#
+#     print (result)
+#
+#     perplexity = model.perplexity(("tired", "of", "sitting"))
+#
+#     pass
+
+if __name__ == "__main__":
+    main()
