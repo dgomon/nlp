@@ -1,3 +1,5 @@
+import math
+import this
 from collections import Counter, defaultdict
 
 import nltk
@@ -10,7 +12,7 @@ unknown_symbol = '<UNK>'
 
 class NGramLanguageModel:
     def __init__(self, n):
-        self.history_length: int = n
+        self.n: int = n
         self.ngram_probs: dict[tuple[str, ...], dict[str, float]] = {}
 
         self.tokens: list[str] = []
@@ -33,7 +35,7 @@ class NGramLanguageModel:
 
     def train(self):
         # count
-        for ngram in nltk.ngrams(self.train_tokens, self.history_length + 1, pad_left=True, pad_right=True,
+        for ngram in nltk.ngrams(self.train_tokens, self.n, pad_left=True, pad_right=True,
                                  left_pad_symbol=start_symbol, right_pad_symbol=end_symbol):
 
             history = ngram[:-1]   # The history string/tuple
@@ -44,7 +46,7 @@ class NGramLanguageModel:
 
     def prob(self, word, history, smoothing=None):
         # if history is shorter than n - 1, pad it on the left
-        history = (start_symbol,) * max(0, self.history_length - len(history)) + history
+        # history = (start_symbol,) * max(0, self.n - len(history)) + history
 
         if self.history_counts[history] == 0:
             # History not found
@@ -56,6 +58,20 @@ class NGramLanguageModel:
         # no smoothing
         return self.successor_counts[history][word] / self.history_counts[history]
 
+    def perplexity(self, tokens, smoothing=None):
+        prod = 1.0
+
+        num_tokens = len(tokens) - (self.n - 1)
+        if num_tokens <= 0:
+            return float('inf')
+
+        # skipping first n - 1 tokens such that the length of history of each token in calculation is at least n - 1
+        for i in range(self.n - 1, len(tokens)):
+            prod *= self.prob(tokens[i], tokens[i - self.n + 1: i], smoothing)
+            if prod == 0:
+                return float('inf')
+
+        return math.pow(prod, -1 / num_tokens)
 
 if __name__ == '__main__':
     model = NGramLanguageModel(n = 2)
@@ -66,8 +82,9 @@ if __name__ == '__main__':
     model.train()
 
     result = model.prob("alice", ("[",), smoothing='Laplace')
-    # result = model.prob("alice", ("[",))
 
     print (result)
+
+    perplexity = model.perplexity(("tired", "of", "sitting"))
 
     pass
