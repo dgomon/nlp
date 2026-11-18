@@ -78,13 +78,13 @@ class NGramLanguageModel:
 
         if self.history_counts[history_tuple] == 0:
             # History not found
-            return 0
+            return 0.0
 
         if smoothing == 'Laplace':
-            return (self.next_word_counts[history_tuple][word] + 1) / (self.history_counts[history_tuple] + len(self.vocab))
+            return float((self.next_word_counts[history_tuple][word] + 1) / (self.history_counts[history_tuple] + len(self.vocab)))
 
         # no smoothing
-        return self.next_word_counts[history_tuple][word] / self.history_counts[history_tuple]
+        return float(self.next_word_counts[history_tuple][word] / self.history_counts[history_tuple])
 
 
     def perplexity(self, tokens: Sequence[str], smoothing=None) -> float:
@@ -166,9 +166,9 @@ def main() -> None:
         })
 
     header = f"{'n':<4} | {'Train (MLE)':<12} | {'Test (MLE)':<12} | {'Train (Laplace)':<15} | {'Test (Laplace)':<15}"
+
     print(header)
     print("-" * len(header))
-
     for s in stats:
         print(
             f"{s['n']:<4} | "
