@@ -86,19 +86,19 @@ class NGramLanguageModel:
     def perplexity(self, tokens: Sequence[str], smoothing=None) -> float:
         """Compute perplexity using predictions with full n-1-token histories.
         """
-        prod = 1.0
-
         num_tokens = len(tokens) - (self.n - 1)
         if num_tokens <= 0:
             return float('inf')
 
-        # skipping first n - 1 tokens such that the length of history of each token in calculation is at least n - 1
+        log_sum = 0.0 # accumulate log(prob) for numerical stability
+        # skip first n - 1 tokens such that the length of history of each token in calculation is at least n - 1
         for i in range(self.n - 1, len(tokens)):
-            prod *= self.prob(tokens[i], tokens[i - self.n + 1: i], smoothing)
-            if prod == 0:
+            prob = self.prob(tokens[i], tokens[i - self.n + 1: i], smoothing)
+            if prob == 0:
                 return float('inf')
+            log_sum += math.log(prob)
 
-        return math.pow(prod, -1 / num_tokens)
+        return math.exp(-log_sum / num_tokens)
 
 if __name__ == '__main__':
     model = NGramLanguageModel(n = 2)
