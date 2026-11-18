@@ -150,7 +150,8 @@ def main() -> None:
     models: dict[int, NGramLanguageModel] = {}
     stats = []
 
-    for n in (2, 3, 4):
+    n_values = (2, 3, 4)
+    for n in n_values:
         model = NGramLanguageModel(n)
         model.prepare_data(text)
         model.train()
@@ -210,6 +211,31 @@ def main() -> None:
         wrapped = textwrap.fill(text, width=80, initial_indent="  ", subsequent_indent="  ")
         print(wrapped)
         print("-" * 40)
+
+
+    generated = {}
+    strategy = "random"
+    history = ["she", "said", "to"]
+    for n in n_values:
+        result = models[n].generate(
+            history=history[:n - 1],
+            max_tokens=100,
+            strategy=strategy,
+        )
+        generated[n] = result
+
+        # Pretty print with explicit text wrapping
+    for n in generated.keys():
+        print(f"[{strategy.upper()} | n: {n}]")
+
+        text = generated[n]
+        # Handle both string and list-of-tokens generation outputs
+        text = " ".join(str(token) for token in text)
+
+        wrapped = textwrap.fill(text, width=80, initial_indent="  ", subsequent_indent="  ")
+        print(wrapped)
+        print("-" * 40)
+
 
     # TODO: Choose a fixed, observed initial history. Generate
     # with greedy, random, and temperature sampling for one model.
