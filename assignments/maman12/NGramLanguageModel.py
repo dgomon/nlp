@@ -9,6 +9,7 @@ Corpus download (once): python -m nltk.downloader gutenberg
 """
 import math
 import random
+import textwrap
 from collections import Counter, defaultdict
 from typing import Sequence
 
@@ -182,20 +183,33 @@ def main() -> None:
 
 
     generated = {}
-    for strategy in ("greedy", "random", "temperature"):
+    for (strategy, temperature) in (
+            ("greedy", 1.0),
+            ("random", 1.0),
+            ("temperature", 0.01),
+            ("temperature", 1.0),
+            ("temperature", 100.0)
+    ):
         result = models[3].generate(
-            ["she", "said"],
+            history=["she", "said"],
             max_tokens=100,
             strategy=strategy,
-            temperature=1.0
+            temperature=temperature,
         )
-        generated[strategy] = result
+        generated[(strategy, temperature)] = result
 
-        # Format tokens if result is a list, otherwise use as string
-        output_text = " ".join(result) if isinstance(result, list) else str(result)
+    # Pretty print with explicit text wrapping
+    for (strategy, temperature) in generated.keys():
+        temp_val = temperature if strategy == "temperature" else "N/A"
+        print(f"[{strategy.upper()} | Temp: {temp_val}]")
 
-        # Render as formatted Markdown for clean inclusion in PDF exports
-        display(Markdown(f"### Strategy: `{strategy}`\n\n```text\n{output_text}\n```\n"))
+        text = generated[(strategy, temperature)]
+        # Handle both string and list-of-tokens generation outputs
+        text = " ".join(str(token) for token in text)
+
+        wrapped = textwrap.fill(text, width=80, initial_indent="  ", subsequent_indent="  ")
+        print(wrapped)
+        print("-" * 40)
 
     # TODO: Choose a fixed, observed initial history. Generate
     # with greedy, random, and temperature sampling for one model.
