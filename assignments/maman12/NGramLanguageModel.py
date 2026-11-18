@@ -104,6 +104,42 @@ class NGramLanguageModel:
 
         return math.exp(-log_sum / num_tokens)
 
+    def generate(self,
+        history: Sequence[str],
+        max_tokens: int,
+        strategy: str,
+        temperature: float = 1.0,
+    ) -> list[str]:
+        result = []
+
+        """Generate up to max_tokens new tokens from an initial history.
+        Strategies: 'greedy', 'random', 'temperature'.
+        Use MLE probabilities (no smoothing) for generation.
+        Stop if the current history has no observed continuations.
+        Return only the generated tokens, excluding the initial history.
+        """
+        for i in range (max_tokens):
+            next_word_counts = self.next_word_counts[tuple(history)]
+
+            if next_word_counts == {}:
+                break
+
+            if strategy == 'random':
+                # TODO
+                next_word = next_word_counts.most_common(1)[0][0]
+                result.append(next_word_counts.most_common(1)[0][0])
+            elif strategy == 'temperature':
+                # TODO
+                next_word = next_word_counts.most_common(1)[0][0]
+                result.append(next_word_counts.most_common(1)[0][0])
+            else: # defaulting to greedy
+                next_word = next_word_counts.most_common(1)[0][0]
+
+            result.append(next_word)
+            history = tuple(history[1:]) + (next_word,)
+
+        return result
+
 
 def main() -> None:
     text = gutenberg.raw("carroll-alice.txt")
@@ -116,6 +152,7 @@ def main() -> None:
         model = NGramLanguageModel(n)
         model.prepare_data(text)
         model.train()
+        models[n] = model
 
         stats.append({
             "n": n,
@@ -143,6 +180,13 @@ def main() -> None:
         )
 
     # TODO: doc: reason for infinite perplexity: word "speaker" appearing first on line 3219 (from 3600 total)
+
+    generated = models[2].generate(["said"],
+                                   max_tokens = 100,
+                                   strategy="greedy",
+                                   temperature=1.0)
+
+    print(generated)
 
     # TODO: Choose a fixed, observed initial history. Generate
     # with greedy, random, and temperature sampling for one model.
