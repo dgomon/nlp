@@ -125,13 +125,12 @@ class NGramLanguageModel:
                 break
 
             if strategy == 'random':
-                # TODO
-                next_word = next_word_counts.most_common(1)[0][0]
-                result.append(next_word_counts.most_common(1)[0][0])
+                words, weights = zip(*next_word_counts.items())
+                next_word = random.choices(words, weights=weights, k=1)[0]
             elif strategy == 'temperature':
-                # TODO
-                next_word = next_word_counts.most_common(1)[0][0]
-                result.append(next_word_counts.most_common(1)[0][0])
+                words, counts = zip(*next_word_counts.items())
+                weights = [c ** (1.0 / temperature) for c in counts]
+                next_word = random.choices(words, weights=weights, k=1)[0]
             else: # defaulting to greedy
                 next_word = next_word_counts.most_common(1)[0][0]
 
@@ -181,9 +180,9 @@ def main() -> None:
 
     # TODO: doc: reason for infinite perplexity: word "speaker" appearing first on line 3219 (from 3600 total)
 
-    generated = models[2].generate(["said"],
+    generated = models[3].generate(["she", "said"],
                                    max_tokens = 100,
-                                   strategy="greedy",
+                                   strategy="temperature",
                                    temperature=1.0)
 
     print(generated)
