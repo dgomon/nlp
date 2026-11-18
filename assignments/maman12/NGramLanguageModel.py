@@ -12,6 +12,8 @@ import random
 from collections import Counter, defaultdict
 from typing import Sequence
 
+from IPython.core.display import Markdown
+from IPython.core.display_functions import display
 from nltk.corpus import gutenberg
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
@@ -64,7 +66,6 @@ class NGramLanguageModel:
             self.ngram_counts[ngram] += 1
             self.history_counts[history] += 1
             self.next_word_counts[history][next_word] += 1
-
 
     def prob(self, word: str, history: Sequence[str], smoothing=None) -> float:
         """Return P(word | history).
@@ -179,14 +180,22 @@ def main() -> None:
             f"{s['test_laplace']:<15.4f}"
         )
 
-    # TODO: doc: reason for infinite perplexity: word "speaker" appearing first on line 3219 (from 3600 total)
 
-    generated = models[3].generate(["she", "said"],
-                                   max_tokens = 100,
-                                   strategy="temperature",
-                                   temperature=1.0)
+    generated = {}
+    for strategy in ("greedy", "random", "temperature"):
+        result = models[3].generate(
+            ["she", "said"],
+            max_tokens=100,
+            strategy=strategy,
+            temperature=1.0
+        )
+        generated[strategy] = result
 
-    print(generated)
+        # Format tokens if result is a list, otherwise use as string
+        output_text = " ".join(result) if isinstance(result, list) else str(result)
+
+        # Render as formatted Markdown for clean inclusion in PDF exports
+        display(Markdown(f"### Strategy: `{strategy}`\n\n```text\n{output_text}\n```\n"))
 
     # TODO: Choose a fixed, observed initial history. Generate
     # with greedy, random, and temperature sampling for one model.
@@ -195,7 +204,6 @@ def main() -> None:
     # TODO: Choose one sampling strategy and compare n = 2,3,4.
     # Use the same initial text, choosing its last n-1 tokens for each model.
     # Explain how model order affects the generated text.
-
 
 
 # def main() -> None:
