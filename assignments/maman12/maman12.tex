@@ -137,96 +137,96 @@
 %    \end{align*}
 
 
-%    \section*{Question 3}
-%    \subsection*{a}
-%    TODO
-%
-%    \subsection*{b}
-%    TODO
-%
-%    \subsection*{c}
-%    TODO
-
-
-    \section*{Question 4}
+    \section*{Question 3}
     \subsection*{a}
-    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
-    Then by definition of $P_{MLE}$:
-    \begin{equation}
-        P_{MLE}(w \mid h) = \frac{c(h, w)}{c(h)} = \frac{r}{c(h)}\label{eq:q4eq1}
-    \end{equation}
-    By substituting the Good-Turing adjusted count, we derive the discounted probability of $(h,w)$:
-%    Discounted probability $P^*(w \mid h)$ is defined as:
-    \begin{equation}
-        P^*(w \mid h) = \frac{r^*}{c(h)}\label{eq:q4eq2}
-    \end{equation}
-%
-    The Good-Turing adjusted count $r^*$ is defined as:
-    \begin{equation}
-        r^{*} = (r + 1)\frac{N_r + 1}{N_r}\label{eq:q4eq3}
-    \end{equation}
-%
-    Substituting $\eqref{eq:q4eq3}$ in $\eqref{eq:q4eq2}$ we get:
-    \begin{equation}
-        P^*(w \mid h) = \frac{(r + 1)\frac{N_{r+1}}{N_r}}{c(h)}\label{eq:q4eq4}
-    \end{equation}
-%
-    By definition of $d_r$:
-    \begin{equation}
-        P^*(w \mid h) = d_r \cdot P_{MLE}(w \mid h)  \label{eq:q4eq5} \\
-    \end{equation}
-%
-    Isolating $d_r$:
-    \begin{align*}
-        d_r &= \frac{P^*(w \mid h)}{P_{MLE}(w \mid h)} \\
-            &= \frac{\frac{(r + 1)\frac{N_{r + 1}}{N_r}}{c(h)}}{\frac{r}{c(h)}}
-            = \frac{(r + 1)\frac{N_{r + 1}}{N_r}}{r} \\
-            &= \boxed{(1 + \frac{1}{r})\frac{N_r + 1}{N_r}}
-    \end{align*}
+    TODO
 
     \subsection*{b}
-    Let us split $V$ into two disjoint sets:
-    \begin{itemize}
-        \item $A(h)$: the set of words observed at least once after $h$
-        \item $V \backslash A(h)$: the set of words never observed after $h$
-    \end{itemize}
-%
-    Since $P_{Katz}$ is, by assumption, a valid probability distribution, we require its mass to total $1$:
-    \begin{align*}
-        \sum_{w \in V}P_{Katz}(w \mid h) = 1=
-    \end{align*}
-    Using definition of $P_{Katz}(w \mid h)$ to expand:
-    \begin{gather*}
-        \sum_{w \in A(h)}P^*(w \mid h) + \sum_{w \notin A(h)} \alpha(h)P_{Katz}(w \mid h') = 1
-    \end{gather*}
-    Factoring out $\alpha(h)$:
-    \begin{align*}
-        \sum_{w \in A(h)}P^*(w \mid h) + \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1
-    \end{align*}
-%
-    Rearranging terms:
-    \begin{align*}
-        \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 - \sum_{w \in A(h)}P^*(w \mid h)
-    \end{align*}
-%
-    By assumption, $P_{Katz}(w \mid h')$ is a valid probability, such that we require:
-    \begin{align*}
-        \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') + \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h') = 1  \\
-        \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') = 1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')
-    \end{align*}
-%
-    Isolating $\alpha(h)$:
-    \begin{align*}
-        \alpha(h) &= \frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{\sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h')} \\
-            &= \boxed{\frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')}}
-    \end{align*}
+    TODO
 
-    \textbf{Discussion}:
-    \begin{itemize}
-        \item The numerator represents the leftover probability mass freed up by discounting the observed $n$-grams after history $h$. This is the total probability budget available to distribute among all words never seen after $h$.
-        \item The denominator represents the total probability mass that the lower-order model ($h'$) assigns specifically to those unobserved words ($w \notin A(h)$). Because $P_{\text{Katz}}(w \mid h')$ sums to $1$ over the entire vocabulary $V$, summing it only over the subset $w \notin A(h)$ yields a value strictly less than $1$
-        \item The ratio $\alpha(h)$ acts as a normalizing scaling factor. It scales the lower-order probabilities $P_{Katz}(w \mid h')$ for unseen words so that their sum equals the exact leftover probability mass from the numerator, ensuring the entire distribution sums to 1.
-    \end{itemize}
+    \subsection*{c}
+    TODO
+
+
+%    \section*{Question 4}
+%    \subsection*{a}
+%    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
+%    Then by definition of $P_{MLE}$:
+%    \begin{equation}
+%        P_{MLE}(w \mid h) = \frac{c(h, w)}{c(h)} = \frac{r}{c(h)}\label{eq:q4eq1}
+%    \end{equation}
+%    By substituting the Good-Turing adjusted count, we derive the discounted probability of $(h,w)$:
+%%    Discounted probability $P^*(w \mid h)$ is defined as:
+%    \begin{equation}
+%        P^*(w \mid h) = \frac{r^*}{c(h)}\label{eq:q4eq2}
+%    \end{equation}
+%%
+%    The Good-Turing adjusted count $r^*$ is defined as:
+%    \begin{equation}
+%        r^{*} = (r + 1)\frac{N_r + 1}{N_r}\label{eq:q4eq3}
+%    \end{equation}
+%%
+%    Substituting $\eqref{eq:q4eq3}$ in $\eqref{eq:q4eq2}$ we get:
+%    \begin{equation}
+%        P^*(w \mid h) = \frac{(r + 1)\frac{N_{r+1}}{N_r}}{c(h)}\label{eq:q4eq4}
+%    \end{equation}
+%%
+%    By definition of $d_r$:
+%    \begin{equation}
+%        P^*(w \mid h) = d_r \cdot P_{MLE}(w \mid h)  \label{eq:q4eq5} \\
+%    \end{equation}
+%%
+%    Isolating $d_r$:
+%    \begin{align*}
+%        d_r &= \frac{P^*(w \mid h)}{P_{MLE}(w \mid h)} \\
+%            &= \frac{\frac{(r + 1)\frac{N_{r + 1}}{N_r}}{c(h)}}{\frac{r}{c(h)}}
+%            = \frac{(r + 1)\frac{N_{r + 1}}{N_r}}{r} \\
+%            &= \boxed{(1 + \frac{1}{r})\frac{N_r + 1}{N_r}}
+%    \end{align*}
+%
+%    \subsection*{b}
+%    Let us split $V$ into two disjoint sets:
+%    \begin{itemize}
+%        \item $A(h)$: the set of words observed at least once after $h$
+%        \item $V \backslash A(h)$: the set of words never observed after $h$
+%    \end{itemize}
+%%
+%    Since $P_{Katz}$ is, by assumption, a valid probability distribution, we require its mass to total $1$:
+%    \begin{align*}
+%        \sum_{w \in V}P_{Katz}(w \mid h) = 1=
+%    \end{align*}
+%    Using definition of $P_{Katz}(w \mid h)$ to expand:
+%    \begin{gather*}
+%        \sum_{w \in A(h)}P^*(w \mid h) + \sum_{w \notin A(h)} \alpha(h)P_{Katz}(w \mid h') = 1
+%    \end{gather*}
+%    Factoring out $\alpha(h)$:
+%    \begin{align*}
+%        \sum_{w \in A(h)}P^*(w \mid h) + \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1
+%    \end{align*}
+%%
+%    Rearranging terms:
+%    \begin{align*}
+%        \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 - \sum_{w \in A(h)}P^*(w \mid h)
+%    \end{align*}
+%%
+%    By assumption, $P_{Katz}(w \mid h')$ is a valid probability, such that we require:
+%    \begin{align*}
+%        \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') + \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h') = 1  \\
+%        \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') = 1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')
+%    \end{align*}
+%%
+%    Isolating $\alpha(h)$:
+%    \begin{align*}
+%        \alpha(h) &= \frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{\sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h')} \\
+%            &= \boxed{\frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')}}
+%    \end{align*}
+%
+%    \textbf{Discussion}:
+%    \begin{itemize}
+%        \item The numerator represents the leftover probability mass freed up by discounting the observed $n$-grams after history $h$. This is the total probability budget available to distribute among all words never seen after $h$.
+%        \item The denominator represents the total probability mass that the lower-order model ($h'$) assigns specifically to those unobserved words ($w \notin A(h)$). Because $P_{\text{Katz}}(w \mid h')$ sums to $1$ over the entire vocabulary $V$, summing it only over the subset $w \notin A(h)$ yields a value strictly less than $1$
+%        \item The ratio $\alpha(h)$ acts as a normalizing scaling factor. It scales the lower-order probabilities $P_{Katz}(w \mid h')$ for unseen words so that their sum equals the exact leftover probability mass from the numerator, ensuring the entire distribution sums to 1.
+%    \end{itemize}
 
 
 %    \section*{AI Assistance Disclaimer}
