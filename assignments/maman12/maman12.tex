@@ -199,12 +199,16 @@
     \begin{gather*}
         \sum_{w \in A(h)}P^*(w \mid h) + \sum_{w \notin A(h)} \alpha(h)P_{Katz}(w \mid h') = 1
     \end{gather*}
+    Factoring out $\alpha(h)$:
+    \begin{align*}
+        \sum_{w \in A(h)}P^*(w \mid h) + \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1
+    \end{align*}
+%
     Rearranging terms:
     \begin{align*}
-        \sum_{w \in A(h)}P^*(w \mid h) + \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 \\
-        \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 - \sum_{w \in A(h)}P^*(w \mid h) \\
+        \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 - \sum_{w \in A(h)}P^*(w \mid h)
     \end{align*}
-
+%
     By assumption, $P_{Katz}(w \mid h')$ is a valid probability, such that we require:
     \begin{align*}
         \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') + \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h') = 1  \\
