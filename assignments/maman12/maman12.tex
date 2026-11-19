@@ -191,10 +191,14 @@
         \item $V \backslash A(h)$: the set of words never observed after $h$
     \end{itemize}
 %
-    Using the definition of $P_{Katz}(w \mid h)$ and by requiring the probabilities to sum up to $1$ we get:
-    \begin{align*}
+    Since $P_{Katz}$ is by assumption a valid probability distribution, we require it to sum to $1$:
+    \begin{gather*}
+        \sum_{w \in V}P_{Katz}(w \mid h) = 1 \\
+    \end{gather*}
+    Expanding by definition of $P_{Katz}(w \mid h)$:
+    \begin{gather*}
         \sum_{w \in A(h)}P^*(w \mid h) + \sum_{w \notin A(h)} \alpha(h)P_{Katz}(w \mid h') = 1
-    \end{align*}
+    \end{gather*}
     Rearranging terms:
     \begin{align*}
         \sum_{w \in A(h)}P^*(w \mid h) + \alpha(h) \sum_{w \notin A(h)}P_{Katz}(w \mid h') = 1 \\
