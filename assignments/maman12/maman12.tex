@@ -149,40 +149,40 @@
 
 
     \section*{Question 4}
-%    \subsection*{a}
-%    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
-%    Then by definition of $P_{MLE}$:
-%    \begin{equation}
-%        P_{MLE}(w \mid h) = \frac{c(h, w)}{c(h)} = \frac{r}{c(h)}\label{eq:q4eq1}
-%    \end{equation}
-%    By substituting the Good-Turing adjusted count, we derive the discounted probability of $(h,w)$:
-%%    Discounted probability $P^*(w \mid h)$ is defined as:
-%    \begin{equation}
-%        P^*(w \mid h) = \frac{r^*}{c(h)}\label{eq:q4eq2}
-%    \end{equation}
-%%
-%    The Good-Turing adjusted count $r^*$ is defined as:
-%    \begin{equation}
-%        r^{*} = (r + 1)\frac{N_r + 1}{N_r}\label{eq:q4eq3}
-%    \end{equation}
-%%
-%    Substituting $\eqref{eq:q4eq3}$ in $\eqref{eq:q4eq2}$ we get:
-%    \begin{equation}
-%        P^*(w \mid h) = \frac{(r + 1)\frac{N_{r+1}}{N_r}}{c(h)}\label{eq:q4eq4}
-%    \end{equation}
-%%
-%    By definition of $d_r$:
-%    \begin{equation}
-%        P^*(w \mid h) = d_r \cdot P_{MLE}(w \mid h)  \label{eq:q4eq5} \\
-%    \end{equation}
-%%
-%    Isolating $d_r$:
-%    \begin{align*}
-%        d_r &= \frac{P^*(w \mid h)}{P_{MLE}(w \mid h)} \\
-%            &= \frac{\frac{(r + 1)\frac{N_{r + 1}}{N_r}}{c(h)}}{\frac{r}{c(h)}}
-%            = \frac{(r + 1)\frac{N_{r + 1}}{N_r}}{r} \\
-%            &= \boxed{(1 + \frac{1}{r})\frac{N_r + 1}{N_r}}
-%    \end{align*}
+    \subsection*{a}
+    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
+    Then by definition of $P_{MLE}$:
+    \begin{equation}
+        P_{MLE}(w \mid h) = \frac{c(h, w)}{c(h)} = \frac{r}{c(h)}\label{eq:q4eq1}
+    \end{equation}
+    By substituting the Good-Turing adjusted count, we derive the discounted probability of $(h,w)$:
+%    Discounted probability $P^*(w \mid h)$ is defined as:
+    \begin{equation}
+        P^*(w \mid h) = \frac{r^*}{c(h)}\label{eq:q4eq2}
+    \end{equation}
+%
+    The Good-Turing adjusted count $r^*$ is defined as:
+    \begin{equation}
+        r^{*} = (r + 1)\frac{N_r + 1}{N_r}\label{eq:q4eq3}
+    \end{equation}
+%
+    Substituting $\eqref{eq:q4eq3}$ in $\eqref{eq:q4eq2}$ we get:
+    \begin{equation}
+        P^*(w \mid h) = \frac{(r + 1)\frac{N_{r+1}}{N_r}}{c(h)}\label{eq:q4eq4}
+    \end{equation}
+%
+    By definition of $d_r$:
+    \begin{equation}
+        P^*(w \mid h) = d_r \cdot P_{MLE}(w \mid h)  \label{eq:q4eq5} \\
+    \end{equation}
+%
+    Isolating $d_r$:
+    \begin{align*}
+        d_r &= \frac{P^*(w \mid h)}{P_{MLE}(w \mid h)} \\
+            &= \frac{\frac{(r + 1)\frac{N_{r + 1}}{N_r}}{c(h)}}{\frac{r}{c(h)}}
+            = \frac{(r + 1)\frac{N_{r + 1}}{N_r}}{r} \\
+            &= \boxed{(1 + \frac{1}{r})\frac{N_r + 1}{N_r}}
+    \end{align*}
 
     \subsection*{b}
     Let us split $V$ into two disjoint sets:
