@@ -194,6 +194,19 @@
     This illustrates a major drawback of Laplace smoothing when the vocabulary size $V$ is much larger than the context count $C(h)$: it takes too much probability mass from observed events and assigns the overwhelming majority ($\approx 89.1\%$) to unseen words, severely underestimating the probabilities of words that actually occurred after $h$.
 
 
+    \subsection*{e}
+    \begin{align*}
+        \lim_{V \to \infty} \frac{U}{C(h) + U} &= \lim_{V \to \infty} \frac{V - S}{C(h) + V - S} \\
+            &= \lim_{V \to \infty} \frac{1 - \frac{S}{V}}{\frac{C(h)}{V} + 1 - \frac{S}{V}}
+    \end{align*}
+    With $C(h)$ and $S$ held constant, this limit reaches
+    \begin{align*}
+        \frac{1 - 0}{0 + 1 - 0} = 1
+    \end{align*}
+    This result means that as the vocabulary size $V$ grows very large compared to the context frequency $C(h)$, Laplace smoothing assigns nearly all of the probability mass  to unseen words and almost none  to words actually observed after $h$.
+    Consequently, the conditional distribution approaches a uniform distribution over the vocabulary.
+
+
 %    \section*{Question 4}
 %    \subsection*{a}
 %    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
