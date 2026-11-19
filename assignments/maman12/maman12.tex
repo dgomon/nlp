@@ -154,10 +154,10 @@
 
     \subsection*{b}
 
-    For any word $w$ that never occurred after $h$, we have $C(hw) = 0$, so its Laplace probability is:
+    For any word $w_i$ that never occurred after $h$, we have $C(hw_i) = 0$, so its Laplace probability is:
     \begin{align*}
-        P_{\mathrm{Laplace}}(w \mid h)
-            &= \frac{C(hw) + 1}{C(h) + V} \\
+        P_{\mathrm{Laplace}}(w_i \mid h)
+            &= \frac{C(hw_i) + 1}{C(h) + V} \\
             &= \frac{1}{C(h) + V}.
     \end{align*}
 
@@ -169,15 +169,14 @@
     \end{align*}
 
     \subsection*{c}
-
-    Let $\{w : C(hw) \ge 1\}$ be the set of $S$ distinct words that occurred at least once after $h$. Since all observed occurrences of $h$ are followed by one of these $S$ words, we have $\sum_{w : C(hw) \ge 1} C(hw) = C(h)$. Summing the Laplace probabilities over these words gives:
+    Let $\{w : C(hw) \ge 1\}$ be the set of $S$ words that occurred at least once after $h$. Since all observed occurrences of $h$ are followed by one of these $S$ words, we have $\sum_{w : C(hw) \ge 1} C(hw) = C(h)$. Summing the Laplace probabilities over these words gives:
     \begin{align*}
         \sum_{w : C(hw) \ge 1} P_{\mathrm{Laplace}}(w \mid h)
             &= \sum_{w : C(hw) \ge 1} \frac{C(hw) + 1}{C(h) + V} \\
             &= \frac{\sum_{w : C(hw) \ge 1} C(hw) + S}{C(h) + V} \\
             &= \frac{C(h) + S}{C(h) + V}.
     \end{align*}
-
+%
     Adding this to the sum from part b and substituting $U = V - S$ (so $S + U = V$):
     \begin{align*}
         \frac{C(h) + S}{C(h) + V} + \frac{U}{C(h) + V}
