@@ -139,7 +139,16 @@
 
     \section*{Question 3}
     \subsection*{a}
-    TODO
+    By definition $P_{Laplace}(w \mid h) = \frac{C(hw) + 1}{C(h) + V}$. Since both numerator and denomerator are positive, $P_{Laplace}(w \mid h)$ is positive as well.
+%
+    Proving sum up to 1: \\
+    \begin{align*}
+        \sum_{i = 1}^{V}P_{Laplace}(w_i \mid h) &= \sum_{i = 1}^{V}\frac{C(hw_i) + 1}{C(h) + V}  \\
+            &= \sum_{i = 1}^{V}\frac{C(hw_i)}{C(h) + V} + \frac{V}{C(h) + V} \\
+            &= \frac{C(h)}{C(h) + V} + \frac{V}{C(h) + V} \\
+            &= 1
+    \end{align*}
+
 
     \subsection*{b}
     TODO
