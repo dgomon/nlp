@@ -192,10 +192,10 @@
     \end{itemize}
 %
     Since $P_{Katz}$ is, by assumption, a valid probability distribution, we require its mass to total $1$:
-    \begin{gather*}
-        \sum_{w \in V}P_{Katz}(w \mid h) = 1
-    \end{gather*}
-    Expanding by definition of $P_{Katz}(w \mid h)$:
+    \begin{align*}
+        \sum_{w \in V}P_{Katz}(w \mid h) = 1=
+    \end{align*}
+    Using definition of $P_{Katz}(w \mid h)$ to expand:
     \begin{gather*}
         \sum_{w \in A(h)}P^*(w \mid h) + \sum_{w \notin A(h)} \alpha(h)P_{Katz}(w \mid h') = 1
     \end{gather*}
@@ -214,7 +214,7 @@
         \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') + \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h') = 1  \\
         \sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h') = 1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')
     \end{align*}
-
+%
     Isolating $\alpha(h)$:
     \begin{align*}
         \alpha(h) &= \frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{\sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h')} \\
