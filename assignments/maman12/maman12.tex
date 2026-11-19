@@ -25,116 +25,116 @@
 
     \maketitle
 
-    \section*{Question 1}
-    \subsection*{a}
-    Each $(n - 1)$-gram model can be considered as a special case of an $n$-gram model in which the conditional probabilities ignore the oldest word in the context:
-    \begin{align*}
-        P(w_i \mid w_{i - n + 1}, \dots, w_{i - 1}) = P(w_i \mid w_{i - n + 2}, \dots, w_{i - 1})
-    \end{align*}
-    Therefore, the set of all valid $(n-1)$-gram distributions $\Theta_{n-1}$ is a subset of all valid $n$-gram distributions $\Theta_n$ ($\Theta_{n-1} \subseteq \Theta_n$).
+%    \section*{Question 1}
+%    \subsection*{a}
+%    Each $(n - 1)$-gram model can be considered as a special case of an $n$-gram model in which the conditional probabilities ignore the oldest word in the context:
+%    \begin{align*}
+%        P(w_i \mid w_{i - n + 1}, \dots, w_{i - 1}) = P(w_i \mid w_{i - n + 2}, \dots, w_{i - 1})
+%    \end{align*}
+%    Therefore, the set of all valid $(n-1)$-gram distributions $\Theta_{n-1}$ is a subset of all valid $n$-gram distributions $\Theta_n$ ($\Theta_{n-1} \subseteq \Theta_n$).
+%
+%    Because both models compute likelihood over the exact same sequence of tokens $w_1, \dots, w_{|D|}$ in $D$, Maximum Likelihood Estimation (MLE) chooses the distribution in each class that maximizes $P(D)$:
+%    \begin{align*}
+%        P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
+%    \end{align*}
+%    \qed
+%
+%    \subsection*{b}
+%    By definition of PPD:
+%    \begin{align*}
+%        PP(D) = P(w_1, \dots, w_{|D|})^{-\frac{1}{|D|}}
+%    \end{align*}
+%    In part (a) we proved that $P_n(D) \geq P_{n - 1}(D)$.
+%    Since $a > b \iff a^k > b^k, \forall k > 0$, we get:
+%
+%    \begin{align*}
+%        P_n(D)^{\frac{1}{|D|}} \geq P_{n - 1}(D)^{\frac{1}{|D|}}
+%    \end{align*}
+%    Taking the reciprocal, we get:
+%    \begin{align*}
+%        P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
+%    \end{align*}
+%    \qed
+%    \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model. \qed
+%
+%    \subsection*{c}
+%    No, it does not follow.
+%    We prove by counterexample: \\
+%
+%    Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
+%    Unigram probabilities then are:
+%    \begin{align*}
+%        P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
+%        P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
+%        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
+%    \end{align*}
+%    Bigram probabilities are:
+%    \begin{align*}
+%        P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
+%        P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
+%        P(\texttt{</s>} \mid a) = \frac{1}{4}
+%    \end{align*}
+%
+%    Define test set: \texttt{T=<s>$\underbrace{\texttt{a,a,\dots,a}}_{\times 10}$</s>}, such that $N_{test}=11$. \\
+%    Then for unigram:
+%    \begin{align*}
+%        PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
+%            = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
+%            & \approx 1.70
+%    \end{align*}
+%    For bigram:
+%    \begin{align*}
+%        PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
+%            &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
+%            &= 2
+%    \end{align*}
+%
+%    This counterexample demonstrates that n-gram model for $n=2$ may achieve higher perplexity than $n-1$-model over test corpus data.
 
-    Because both models compute likelihood over the exact same sequence of tokens $w_1, \dots, w_{|D|}$ in $D$, Maximum Likelihood Estimation (MLE) chooses the distribution in each class that maximizes $P(D)$:
-    \begin{align*}
-        P_n(D) = \max_{\theta \in \Theta_n} P(D; \theta) \ge \max_{\theta \in \Theta_{n-1}} P(D; \theta) = P_{n-1}(D)
-    \end{align*}
-    \qed
 
-    \subsection*{b}
-    By definition of PPD:
-    \begin{align*}
-        PP(D) = P(w_1, \dots, w_{|D|})^{-\frac{1}{|D|}}
-    \end{align*}
-    In part (a) we proved that $P_n(D) \geq P_{n - 1}(D)$.
-    Since $a > b \iff a^k > b^k, \forall k > 0$, we get:
-
-    \begin{align*}
-        P_n(D)^{\frac{1}{|D|}} \geq P_{n - 1}(D)^{\frac{1}{|D|}}
-    \end{align*}
-    Taking the reciprocal, we get:
-    \begin{align*}
-        P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
-    \end{align*}
-    \qed
-    \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model. \qed
-
-    \subsection*{c}
-    No, it does not follow.
-    We prove by counterexample: \\
-
-    Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
-    Unigram probabilities then are:
-    \begin{align*}
-        P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
-        P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
-        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
-    \end{align*}
-    Bigram probabilities are:
-    \begin{align*}
-        P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
-        P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
-        P(\texttt{</s>} \mid a) = \frac{1}{4}
-    \end{align*}
-
-    Define test set: \texttt{T=<s>$\underbrace{\texttt{a,a,\dots,a}}_{\times 10}$</s>}, such that $N_{test}=11$. \\
-    Then for unigram:
-    \begin{align*}
-        PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
-            = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
-            & \approx 1.70
-    \end{align*}
-    For bigram:
-    \begin{align*}
-        PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
-            &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
-            &= 2
-    \end{align*}
-
-    This counterexample demonstrates that n-gram model for $n=2$ may achieve higher perplexity than $n-1$-model over test corpus data.
-
-
-    \section*{Question 2}
-    \subsection*{a}
-    Assume $k \in {1, \dots, C}$ is the index of the true target token $w_i$. $\bm{y}^{(i)}$ is the one-hot vector corresponding to step $i$, therefore by definition of $\bm{y}$ we have:
-    \begin{equation}
-        y^{(i)}_j  =
-            \begin{cases}
-                1\text{, } &  j = k \\
-                0\text{, } & otherwise
-            \end{cases}\label{eq:eq1}
-    \end{equation}
-    $\bm{p}^{(i)}$ is the vector of probabilities assigned by the model at step $i$.
-    Since, by assumption, $k$ is the index of the true target token $w_i$, the $k$-th entry of $\bm{p}^{(i)}$ corresponds to the probability the model assigns to
-    $w_i$ given context ($w_1, \dots, w_{i-1}$):
-    \begin{equation}
-        p^{(i)}_k = P(w_i \mid w_1, \dots, w_{i-1})\label{eq:eq2}
-    \end{equation}
-
-    Using definition of cross-entropy, for step $i$ we have:
-    \begin{align*}
-        L_{CE}^{(i)}(\bm{y}^{i}, \bm{p}^{i}) &= -\sum_{j = 1}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j & \text{by definition of $L_{CE}$}  \\
-            &= -(y^{(i)}_{k}\log_{2}p^{(i)}_k + \sum_{j = 1, j \neq k}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j) & \text{isolating non-zero term} \\
-            &= -(1 \cdot \log_{2} p^{(i)}_k) & \text{substituting $\eqref{eq:eq1}$ and $\eqref{eq:eq2}$}  \\
-            &= -\log_{2} P(w_i \mid w_1, \dots, w_{i-1}) \\
-    \end{align*}
-
-    \subsection*{b}
-    Let $W = (w_1,w_2,\dots,w_M)$ be the tokens sequence.
-    We calculate the average cross-entropy as follows:
-    \begin{align*}
-        L_{CE}(W) &= \frac{1}{M} \sum_{i=1}^{M}L^{(i)}_{CE}(W) & \text{averaging cross-entropies of all steps} \\
-            &= \frac{1}{M}\sum_{i=1}^{M}-\log_{2}P(w_{i} \mid w_{1}, \dots, w_{i-1}) & \text{substituting result obtained in section (a)}\\
-            &= -\frac{1}{M}\log_{2}\prod_{i=1}^{M}P(w_{i} \mid w_{1}, \dots, w_{i-1}) & \log(a) + \log(b) = \log(ab) \\
-            &= -\frac{1}{M}\log_{2}P(w_{1}, \dots, w_{M}) & \text{collapsing expression above using the chain rule}
-    \end{align*}
-
-    \subsection*{c}
-    Using the formal definition of perplexity (page 58 in the book), we have:
-    \begin{align*}
-        \text{Perplexity}(W) &= 2^{H(W)} \\
-            &= 2^{-\frac{1}{M}\log_{2}{P(w_1, \dots, w_M)}} \\
-            &= 2^{-\log_{2}{P(w_1, \dots, w_M)^{-\frac{1}{M}}}} \\
-            &= P(w_1, \dots, w_M)^{-\frac{1}{M}}
-    \end{align*}
+%    \section*{Question 2}
+%    \subsection*{a}
+%    Assume $k \in {1, \dots, C}$ is the index of the true target token $w_i$. $\bm{y}^{(i)}$ is the one-hot vector corresponding to step $i$, therefore by definition of $\bm{y}$ we have:
+%    \begin{equation}
+%        y^{(i)}_j  =
+%            \begin{cases}
+%                1\text{, } &  j = k \\
+%                0\text{, } & otherwise
+%            \end{cases}\label{eq:eq1}
+%    \end{equation}
+%    $\bm{p}^{(i)}$ is the vector of probabilities assigned by the model at step $i$.
+%    Since, by assumption, $k$ is the index of the true target token $w_i$, the $k$-th entry of $\bm{p}^{(i)}$ corresponds to the probability the model assigns to
+%    $w_i$ given context ($w_1, \dots, w_{i-1}$):
+%    \begin{equation}
+%        p^{(i)}_k = P(w_i \mid w_1, \dots, w_{i-1})\label{eq:eq2}
+%    \end{equation}
+%
+%    Using definition of cross-entropy, for step $i$ we have:
+%    \begin{align*}
+%        L_{CE}^{(i)}(\bm{y}^{i}, \bm{p}^{i}) &= -\sum_{j = 1}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j & \text{by definition of $L_{CE}$}  \\
+%            &= -(y^{(i)}_{k}\log_{2}p^{(i)}_k + \sum_{j = 1, j \neq k}^{C}y^{(i)}_{j}\log_{2}p^{(i)}_j) & \text{isolating non-zero term} \\
+%            &= -(1 \cdot \log_{2} p^{(i)}_k) & \text{substituting $\eqref{eq:eq1}$ and $\eqref{eq:eq2}$}  \\
+%            &= -\log_{2} P(w_i \mid w_1, \dots, w_{i-1}) \\
+%    \end{align*}
+%
+%    \subsection*{b}
+%    Let $W = (w_1,w_2,\dots,w_M)$ be the tokens sequence.
+%    We calculate the average cross-entropy as follows:
+%    \begin{align*}
+%        L_{CE}(W) &= \frac{1}{M} \sum_{i=1}^{M}L^{(i)}_{CE}(W) & \text{averaging cross-entropies of all steps} \\
+%            &= \frac{1}{M}\sum_{i=1}^{M}-\log_{2}P(w_{i} \mid w_{1}, \dots, w_{i-1}) & \text{substituting result obtained in section (a)}\\
+%            &= -\frac{1}{M}\log_{2}\prod_{i=1}^{M}P(w_{i} \mid w_{1}, \dots, w_{i-1}) & \log(a) + \log(b) = \log(ab) \\
+%            &= -\frac{1}{M}\log_{2}P(w_{1}, \dots, w_{M}) & \text{collapsing expression above using the chain rule}
+%    \end{align*}
+%
+%    \subsection*{c}
+%    Using the formal definition of perplexity (page 58 in the book), we have:
+%    \begin{align*}
+%        \text{Perplexity}(W) &= 2^{H(W)} \\
+%            &= 2^{-\frac{1}{M}\log_{2}{P(w_1, \dots, w_M)}} \\
+%            &= 2^{-\log_{2}{P(w_1, \dots, w_M)^{-\frac{1}{M}}}} \\
+%            &= P(w_1, \dots, w_M)^{-\frac{1}{M}}
+%    \end{align*}
 
 
 %    \section*{Question 3}
@@ -148,16 +148,48 @@
 %    TODO
 
 
-%    \section*{Question 4}
-%    \subsection*{a}
-%    TODO
+    \section*{Question 4}
+    \subsection*{a}
+    Let $r = c(h, w)$ be the count of $n$-gram $(h,w)$ in the training corpus.
+    Then by definition of $P_{MLE}$:
+    \begin{equation}
+        P_{MLE}(w \mid h) = \frac{c(h, w)}{c(h)} = \frac{r}{c(h)}\label{eq:q4eq1}
+    \end{equation}
+    By substituting the Good-Turing adjusted count, we derive the discounted probability of $(h,w)$:
+%    Discounted probability $P^*(w \mid h)$ is defined as:
+    \begin{equation}
+        P^*(w \mid h) = \frac{r^*}{c(h)}\label{eq:q4eq2}
+    \end{equation}
 %
-%    \subsection*{b}
-%    TODO
+    The Good-Turing adjusted count $r^*$ is defined as:
+    \begin{equation}
+        r^{*} = (r + 1)\frac{N_r + 1}{N_r}\label{eq:q4eq3}
+    \end{equation}
 %
-%    \subsection*{c}
-%    TODO
+    Substituting $\eqref{eq:q4eq3}$ in $\eqref{eq:q4eq2}$ we get:
+    \begin{equation}
+        P^*(w \mid h) = \frac{(r + 1)\frac{N_{r+1}}{N_r}}{c(h)}\label{eq:q4eq4}
+    \end{equation}
+%
+    By definition of $d_r$:
+    \begin{equation}
+        P^*(w \mid h) = d_r \cdot P_{MLE}(w \mid h)  \label{eq:q4eq5} \\
+    \end{equation}
+%
+    Isolating $d_r$:
+    \begin{align*}
+        d_r &= \frac{P^*(w \mid h)}{P_{MLE}(w \mid h)} \\
+            &= \frac{\frac{(r + 1)\frac{N_{r + 1}}{N_r}}{c(h)}}{\frac{r}{c(h)}}
+            = \frac{(r + 1)\frac{N_{r + 1}}{N_r}}{r} \\
+            &= \boxed{(1 + \frac{1}{r})\frac{N_r + 1}{N_r}}
+    \end{align*}
 
+
+    \subsection*{a}
+    TODO
+
+    \subsection*{b}
+    TODO
 
 %    \section*{AI Assistance Disclaimer}
 %    \begin{itemize}
