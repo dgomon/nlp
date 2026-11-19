@@ -184,6 +184,15 @@
             &= \frac{C(h) + V}{C(h) + V} = 1.
     \end{align*}
 
+    \subsection*{d}
+    From (b) we have:
+    \begin{align*}
+        \sum_{w : C(hw) = 0}P_{Laplace}(w \mid h) &= \frac{U}{C(h) + U} \\
+            &= \frac{V - S}{C(h) + V - S} = \frac{1000 - 20}{100 + 1000 - 20} \\
+            &= 0.89
+    \end{align*}
+    This illustrates a major drawback of Laplace smoothing when the vocabulary size $V$ is much larger than the context count $C(h)$: it takes too much probability mass from observed events and assigns the overwhelming majority ($\approx 89.1\%$) to unseen words, severely underestimating the probabilities of words that actually occurred after $h$.
+
 
 %    \section*{Question 4}
 %    \subsection*{a}
