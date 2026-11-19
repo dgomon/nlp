@@ -191,9 +191,9 @@
         \item $V \backslash A(h)$: the set of words never observed after $h$
     \end{itemize}
 %
-    Since $P_{Katz}$ is by assumption a valid probability distribution, we require it to sum to $1$:
+    Since $P_{Katz}$ is, by assumption, a valid probability distribution, we require its mass to total $1$:
     \begin{gather*}
-        \sum_{w \in V}P_{Katz}(w \mid h) = 1 \\
+        \sum_{w \in V}P_{Katz}(w \mid h) = 1
     \end{gather*}
     Expanding by definition of $P_{Katz}(w \mid h)$:
     \begin{gather*}
@@ -218,9 +218,10 @@
     Isolating $\alpha(h)$:
     \begin{align*}
         \alpha(h) &= \frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{\sum_{w \notin A(h)} P_{\text{Katz}}(w \mid h')} \\
-            &= \frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')}
+            &= \boxed{\frac{1 - \sum_{w \in A(h)} P^*(w \mid h)}{1 - \sum_{w \in A(h)} P_{\text{Katz}}(w \mid h')}}
     \end{align*}
 
+    \textbf{Discussion}:
     \begin{itemize}
         \item The numerator represents the leftover probability mass freed up by discounting the observed $n$-grams after history $h$. This is the total probability budget available to distribute among all words never seen after $h$.
         \item The denominator represents the total probability mass that the lower-order model ($h'$) assigns specifically to those unobserved words ($w \notin A(h)$). Because $P_{\text{Katz}}(w \mid h')$ sums to $1$ over the entire vocabulary $V$, summing it only over the subset $w \notin A(h)$ yields a value strictly less than $1$
