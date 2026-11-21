@@ -17,14 +17,14 @@ notebook:
 quarto: notebook
 	quarto render $(NAME).ipynb --metadata-file pdf-style.yml --to pdf
 
-#merge: latex quarto notebook
-#	python3 -c "\
-#	from pypdf import PdfWriter; \
-#	merger = PdfWriter(); \
-#	merger.append('./$(ASSIGNMENT).pdf'); \
-#	merger.append('./BPETokenizer.pdf'); \
-#	merger.write('merged.pdf'); \
-#	merger.close()"
+merge: latex quarto notebook
+	python3 -c "\
+	from pypdf import PdfWriter; \
+	merger = PdfWriter(); \
+	merger.append('./$(ASSIGNMENT).pdf'); \
+	merger.append('./$(NAME).pdf'); \
+	merger.write('merged.pdf'); \
+	merger.close()"
 
 #zip: merge
 #	zip $(ASSIGNMENT).zip BPETokenizer.ipynb ./merged.pdf
