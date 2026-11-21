@@ -26,8 +26,8 @@ merge: latex quarto notebook
 	merger.write('merged.pdf'); \
 	merger.close()"
 
-#zip: merge
-#	zip $(ASSIGNMENT).zip BPETokenizer.ipynb ./merged.pdf
+zip: merge
+	zip $(ASSIGNMENT).zip $(NAME).ipynb ./merged.pdf
 
 clean:
 	jupyter nbconvert --clear-output --inplace $(NAME).ipynb
