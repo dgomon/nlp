@@ -54,20 +54,20 @@
         P_n(D)^{-\frac{1}{|D|}} \leq P_{n - 1}(D)^{-\frac{1}{|D|}}
     \end{align*}
 
-    \noindent \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $n-1$-gram model.
+    \noindent \textbf{Explanation:} Both models evaluate likelihood over the exact same sequence of $|D|$ tokens. Perplexity is the inverse geometric mean of the per-word probabilities; because the $n$-gram model assigns a higher (or equal) overall likelihood to $D$, its average predicted probability per word is at least as high, yielding lower (or equal) perplexity. In other words, the $n$-gram model is no more (and probably less) perplexed about upcoming words than the $(n-1)$-gram model.
 
     \subsection*{c}
     No, it does not follow.
     We prove by counterexample: \\
 
     Define training set: \texttt{D=<s>,a,a,b,a,a,</s>}, such that $N_{train} = 6$.\\
-    Unigram probabilities then are:
+    Calculating unigram probabilities over the training set:
     \begin{align*}
-        P(a) = \frac{C(a)}{N} = \frac{4}{6} = \frac{2}{3}, \quad
-        P(b) = \frac{C(b)}{N} = \frac{1}{6}, \quad
-        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N} = \frac{1}{6}
+        P(a) = \frac{C(a)}{N_{train}} = \frac{4}{6} = \frac{2}{3}, \quad
+        P(b) = \frac{C(b)}{N_{train}} = \frac{1}{6}, \quad
+        P(\texttt{/s}) = \frac{C(\texttt{/s})}{N_{train}} = \frac{1}{6}
     \end{align*}
-    Bigram probabilities are:
+    Calculating bigram probabilities:
     \begin{align*}
         P(a \mid a) = \frac{C(aa)}{C(a)} = \frac{1}{2}, \quad
         P(b \mid a) = \frac{C(ab)}{C(a)} = \frac{1}{4}, \quad
@@ -75,20 +75,20 @@
     \end{align*}
 
     Define test set: \texttt{T=<s>$\underbrace{\texttt{a,a,\dots,a}}_{\times 10}$</s>}, such that $N_{test}=11$. \\
-    Then for unigram:
+    Calculating unigram probabilities:
     \begin{align*}
         PP_{1}(T) &= \big(P(a)^{10} P(</s>)\big)^{-\frac{1}{11}}
             = ((\frac{2}{3})^{10} \cdot \frac{1}{6})^{-\frac{1}{11}} \\
             & \approx 1.70
     \end{align*}
-    For bigram:
+    Calculating bigram probabilities:
     \begin{align*}
         PP_{2}(T) &= (P(a \mid <s>)\underbrace{P(a \mid a) \dots P(a \mid a)}_{\times 9}P(</s> \mid a))^{-\frac{1}{11}} \\
             &= (1 \cdot (\frac{1}{2})^9 \cdot \frac{1}{4})^{-\frac{1}{11}} \\
             &= 2
     \end{align*}
 
-    This counterexample demonstrates that n-gram model for $n=2$ may achieve higher perplexity than $n-1$-model over test corpus data.
+    Since $1.70 < 2$, this counterexample demonstrates that $n$-gram model may achieve higher perplexity than $(n-1)$- gram model over test corpus data for $n=2$.
 
 
     \section*{Question 2}
